@@ -1,0 +1,90 @@
+<nav class="bg-[#4B27A8] text-white p-4">
+  <div class="container mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <img src="/images/logo.png" alt="Logo" class="h-20 w-auto mr-4" /> <!-- Insira a imagem do logo aqui -->
+      <a href="{{ route('home.show') }}" class="text-xl font-semibold">UFRRPG Store</a>
+    </div>
+
+    <!-- Barra de pesquisa -->
+    <div class="flex-1 mx-4">
+      <form action="/search" method="GET" class="relative">
+        <input
+          type="text"
+          placeholder="Pesquisar..."
+          class="w-full px-4 py-2 rounded-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-white"
+        />
+        <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700">
+          🔍
+        </button>
+      </form>
+    </div>
+
+    <!-- Ícones de usuário e carrinho -->
+    <div class="flex items-center space-x-6">
+      <!-- Usuário -->
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+      <!-- Lógica de Autenticação -->
+      <div class="hidden md:flex flex-col items-start justify-end w-full pt-4 md:items-center md:w-1/3 md:flex-row md:py-0">
+        @if(auth.isAuthenticated)
+          <div class="relative inline-block text-left">
+            <button id="user-menu-button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false">
+              <span class="sr-only">Open user menu</span>
+              <img class="w-8 h-8 rounded-full" src="public/images/user_icon.png" alt="user photo">
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden absolute right-0 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700" id="user-dropdown">
+              <div class="px-4 py-3 flex items-center">
+                <img class="w-10 h-10 rounded-full mr-3" src="public/images/user_icon.png" alt="User Avatar">
+                <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ auth.user.first_name }} {{ auth.user.last_name }}</span>
+              </div>
+              <ul class="py-2" aria-labelledby="user-menu-button">
+                <li>
+                  <a href="resources\views\pages\users\edit.edge" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Editar Perfil</a>
+                </li>
+                <li>
+                  <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Configurações</a>
+                </li>
+                <li>
+                  <a href="/help" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Ajuda e Suporte</a>
+                </li>
+                <li>
+                  <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Logout</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        @else
+          <a href="{{ route('auth.create') }}" class="px-4 py-2 text-sm font-medium text-gray-700 rounded-md text-white hover:bg-blue-600 dark:bg-[#4B27A8] dark:hover:bg-blue-700">Entrar</a>
+        @end
+      </div>
+
+
+
+      <!-- Carrinho -->
+      <a href="/cart" class="relative">
+        <span class="material-icons"> Carrinho</span>
+        <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+
+<script>
+  // Lógica para alternar a visibilidade do dropdown de usuário
+  const userMenuButton = document.getElementById('user-menu-button');
+  const userDropdown = document.getElementById('user-dropdown');
+
+  userMenuButton.addEventListener('click', () => {
+    userDropdown.classList.toggle('hidden');
+  });
+
+  // Fechar o dropdown ao clicar fora dele
+  window.addEventListener('click', (e) => {
+    if (!userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
+      userDropdown.classList.add('hidden');
+    }
+  });
+</script>

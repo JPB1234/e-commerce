@@ -1,0 +1,29 @@
+@layouts.app()
+
+<div class="container mx-auto py-8">
+  <!-- Seção de Boas-vindas -->
+  <section class="text-center mb-12">
+    <h1 class="text-4xl font-bold mb-2">Boas vindas à UFRRPG 🎲</h1>
+    <p class="text-gray-700">Encontre produtos diversos para sua mesa de RPG</p>
+  </section>
+
+  <!-- Seção de Produtos em Destaque -->
+  <section>
+    <h2 class="text-2xl font-semibold text-center mb-6">Produtos em Destaque</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Exemplo de Produto -->
+      <div class="border rounded-lg overflow-hidden shadow-lg">
+        <img src="https://via.placeholder.com/150" alt="Produto" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h3 class="font-semibold text-lg">Nome do Produto</h3>
+          <p class="text-gray-500">Descrição breve do produto.</p>
+          <p class="text-blue-600 font-bold mt-2">R$ 99,90</p>
+          <button class="bg-blue-500 text-white px-4 py-2 mt-4 w-full rounded-lg hover:bg-blue-600">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+      <!-- Repetir esse bloco para mais produtos -->
+    </div>
+  </section>
+</div>
+
+@end

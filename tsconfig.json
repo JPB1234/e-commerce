@@ -1,0 +1,10 @@
+{
+  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@ioc/*": ["./node_modules/@adonisjs/*"],
+      "app/*": ["app/*"]
+    }
+  }
+}
