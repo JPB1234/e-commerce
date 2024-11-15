@@ -13,7 +13,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
   declare id: number
 
-  @column()
+  @column({ serializeAs: 'full_name' }) // Especificando que o campo full_name é mapeado
   declare fullName: string | null
 
   @column()
