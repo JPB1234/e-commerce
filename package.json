@@ -65,6 +65,7 @@
     "@adonisjs/vite": "^3.0.0",
     "@iconify-json/heroicons": "^1.2.1",
     "@vinejs/vine": "^2.1.0",
+    "alpinejs": "^3.14.3",
     "better-sqlite3": "^11.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
