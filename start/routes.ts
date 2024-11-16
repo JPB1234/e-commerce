@@ -1,8 +1,3 @@
-/*
-|------------------------------------------------------------------
-| Routes file
-|------------------------------------------------------------------
-*/
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
@@ -30,8 +25,18 @@ router
     router.get('/products', [ProductsController, 'index']).as('products.index')
     router.get('/products/new', [ProductsController, 'create']).as('products.create')
     router.get('/products/:id', [ProductsController, 'show']).as('products.show')
+
+    // Rota para editar o perfil do usuário
     router.get('/profile/edit', [UsersController, 'edit']).use(middleware.auth()).as('users.edit')
+
+    // Rota para configurações do usuário
     router.get('/profile/settings', [UsersController, 'settings']).use(middleware.auth()).as('users.settings')
+
+    // Rota para Ajuda e Suporte (criação de uma página simples)
+    router.get('/help', async () => {
+      return { message: 'Aqui está a seção de Ajuda e Suporte' }
+    }).as('help.show')
+
     router.post('/products', [ProductsController, 'store']).as('products.store')
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy')
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch')
