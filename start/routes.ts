@@ -28,6 +28,7 @@ router
 
     // Rota para editar o perfil do usuário
     router.get('/profile/edit', [UsersController, 'edit']).use(middleware.auth()).as('users.edit')
+    router.post('/profile/edit', [UsersController, 'update']).as('users.update')
 
     // Rota para configurações do usuário
     router.get('/profile/settings', [UsersController, 'settings']).use(middleware.auth()).as('users.settings')

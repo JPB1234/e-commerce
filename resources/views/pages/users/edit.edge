@@ -1,215 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9fafb;
-            margin: 0;
-            padding: 0;
-        }
-
-        .flex {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .min-h-[80vh] {
-            min-height: 80vh;
-        }
-
-        .justify-center {
-            justify-content: center;
-        }
-
-        .py-12 {
-            padding-top: 3rem;
-            padding-bottom: 3rem;
-        }
-
-        .sm\:px-6 {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .lg\:px-8 {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .sm\:mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .sm\:w-full {
-            width: 100%;
-        }
-
-        .sm\:max-w-md {
-            max-width: 28rem;
-        }
-
-        .text-3xl {
-            font-size: 1.875rem;
-            line-height: 2.25rem;
-        }
-
-        .font-bold {
-            font-weight: 700;
-        }
-
-        .text-gray-900 {
-            color: #111827;
-        }
-
-        .mt-8 {
-            margin-top: 2rem;
-        }
-
-        .bg-white {
-            background-color: #ffffff;
-        }
-
-        .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        .pb-4 {
-            padding-bottom: 1rem;
-        }
-
-        .pt-8 {
-            padding-top: 2rem;
-        }
-
-        .sm\:rounded-lg {
-            border-radius: 0.5rem;
-        }
-
-        .sm\:px-10 {
-            padding-left: 2.5rem;
-            padding-right: 2.5rem;
-        }
-
-        .sm\:pb-6 {
-            padding-bottom: 1.5rem;
-        }
-
-        .space-y-6 > * + * {
-            margin-top: 1.5rem;
-        }
-
-        .block {
-            display: block;
-        }
-
-        .text-sm {
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-        }
-
-        .font-medium {
-            font-weight: 500;
-        }
-
-        .text-gray-700 {
-            color: #374151;
-        }
-
-        .mt-1 {
-            margin-top: 0.25rem;
-        }
-
-        .w-full {
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-<div class="flex min-h-[80vh] flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="text-center sm:mx-auto sm:w-full sm:max-w-md">
-      <h1 class="text-3xl font-bold text-gray-900">Editar Perfil</h1>
-    </div>
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white px-4 pb-4 pt-8 sm:rounded-lg sm:px-10 sm:pb-6">
-        @form({
-          action: route('users.store'),
-          method: 'POST',
-          class: 'space-y-6',
-        })
-          <div>
-            <label for="full_name" class="block text-sm font-medium text-gray-700" >Nome</label>
-            <div class="mt-1">
-              @!input({
-                type: 'text',
-                name: 'full_name',
-                placeholder : auth.user.full_name,
-                required: true,
-              })
+@layouts.app() 
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <body>
+  <div class="flex min-h-[80vh] flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div class="text-center sm:mx-auto sm:w-full sm:max-w-md">
+        <h1 class="text-3xl font-bold text-gray-900">Editar Perfil</h1>
+      </div>
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white px-4 pb-4 pt-8 sm:rounded-lg sm:px-10 sm:pb-6">
+          @form({
+            action: route('users.update'),
+            method: 'POST',
+            class: 'space-y-6',
+          })
+            <div>
+              <label for="full_name" class="block text-sm font-medium text-gray-700" >Nome</label>
+              <div class="mt-1">
+                @!input({
+                  type: 'text',
+                  name: 'full_name',
+                  placeholder : auth.user.full_name,
+                  required: true,
+                })
+              </div>
             </div>
-          </div>
-          <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
-            <div class="mt-1">
-              @!input({
-                type: 'text',
-                name: 'username',
-                placeholder : auth.user.username,
-                required: true,
-              })
+            <div>
+              <label for="username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
+              <div class="mt-1">
+                @!input({
+                  type: 'text',
+                  name: 'username',
+                  placeholder : auth.user.username,
+                  required: true,
+                })
+              </div>
             </div>
-          </div>
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-            <div class="mt-1">
-              @!input({
-                type: 'email',
-                name: 'email',
-                placeholder : auth.user.email,
-                required: true,
-              })
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              <div class="mt-1">
+                @!input({
+                  type: 'email',
+                  name: 'email',
+                  placeholder : auth.user.email,
+                  required: true,
+                })
+              </div>
             </div>
-          </div>
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
-            <div class="mt-1">
-              @!input({
-                type: 'password',
-                name: 'password',
-                required: true,
-              })
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha</label>
+              <div class="mt-1">
+                @!input({
+                  type: 'password',
+                  name: 'password',
+                  required: true,
+                })
+              </div>
             </div>
-          </div>
-          <div>
-            <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirme a Senha</label>
-            <div class="mt-1">
-              @!input({
-                type: 'password',
-                name: 'password_confirm',
-                required: true,
-              })
+            
+            <div>
+              <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirme a Senha nova</label>
+              <div class="mt-1">
+                @!input({
+                  type: 'password',
+                  name: 'password_confirm',
+                  required: true,
+                })
+              </div>
             </div>
-          </div>
-          <div>
-            @button({
-              type: 'submit',
-              class: 'w-full',
-            })
-              Salvar Mudanças
-            @end
-          </div>
-        @end
+            <div>
+              @button({
+                type: 'submit',
+                class: 'w-full',
+              })
+                Salvar Mudanças
+              @end
+            </div>
+          @end
+        </div>
       </div>
     </div>
-  </div>
-</body>
-</html>
+  </body>
+  </html>
+@end
