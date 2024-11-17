@@ -1,189 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Profile Page with Alpine.js</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <style>
         body {
-            margin-top: 20px;
-            background: #f8f8f8;
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .flex {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .min-h-[80vh] {
+            min-height: 80vh;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .py-12 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .sm\:px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .lg\:px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .sm\:mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sm\:w-full {
+            width: 100%;
+        }
+
+        .sm\:max-w-md {
+            max-width: 28rem;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-gray-900 {
+            color: #111827;
+        }
+
+        .mt-8 {
+            margin-top: 2rem;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .pb-4 {
+            padding-bottom: 1rem;
+        }
+
+        .pt-8 {
+            padding-top: 2rem;
+        }
+
+        .sm\:rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .sm\:px-10 {
+            padding-left: 2.5rem;
+            padding-right: 2.5rem;
+        }
+
+        .sm\:pb-6 {
+            padding-bottom: 1.5rem;
+        }
+
+        .space-y-6 > * + * {
+            margin-top: 1.5rem;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .text-gray-700 {
+            color: #374151;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+
+        .w-full {
+            width: 100%;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body>
-<div class="container" x-data="profileData()">
-<div class="row flex-lg-nowrap">
-  <div class="col-12 col-lg-auto mb-3" style="width: 200px;"></div>
-
-  <div class="col">
-    <div class="row">
-      <div class="col mb-3">
-        <div class="card">
-          <div class="card-body">
-            <div class="e-profile">
-              <div class="row">
-                <div class="col-12 col-sm-auto mb-3">
-                  <div class="mx-auto" style="width: 140px;">
-                    <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-                      <template x-if="!photo">
-                        <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
-                      </template>
-                      <template x-if="photo">
-                        <img :src="photo" alt="Profile Photo" style="height: 100%; width: auto; border-radius: 50%;">
-                      </template>
-                    </div>
-                  </div>
-                </div>
-                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
-                  <div class="text-center text-sm-left mb-2 mb-sm-0">
-                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap" x-text="name"></h4>
-                    <p class="mb-0" x-text="username"></p>
-                    <div class="mt-2">
-                      <button class="btn btn-primary" type="button" @click="changePhoto">
-                        <i class="fa fa-fw fa-camera"></i>
-                        <span>Change Photo</span>
-                      </button>
-                      <input type="file" class="d-none" x-ref="fileInput" @change="uploadPhoto">
-                    </div>
-                  </div>
-                  <div class="text-center text-sm-right">
-                    <span class="badge badge-secondary">administrator</span>
-                  </div>
-                </div>
-              </div>
-              <ul class="nav nav-tabs">
-                <li class="nav-item"><a href="#" class="active nav-link">Settings</a></li>
-              </ul>
-              <div class="tab-content pt-3">
-                <div class="tab-pane active">
-                  <form class="form" @submit.prevent="saveChanges">
-                    <div class="row">
-                      <div class="col">
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Full Name</label>
-                              <input class="form-control" type="text" x-model="name" placeholder= {{ auth.user.full_name }} name="full_name">
-                            </div>
-                          </div>
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Username</label>
-                              <input class="form-control" type="text" x-model="username" placeholder={{ auth.user.username }} name="username">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Email</label>
-                              <input class="form-control" type="email" x-model="email" placeholder={{ auth.user.email }} name="email">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col mb-3">
-  
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12 col-sm-6 mb-3">
-                        <div class="mb-2"><b>Change Password</b></div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Current Password</label>
-                              <input class="form-control" type="password" x-model="passwords.current" placeholder="••••••" name="current_password">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>New Password</label>
-                              <input class="form-control" type="password" x-model="passwords.new" placeholder="••••••" name="new_password">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="form-group">
-                              <label>Confirm Password</label>
-                              <input class="form-control" type="password" x-model="passwords.confirm" placeholder="••••••" name="confirm_password">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col d-flex justify-content-end">
-                        <button class="btn btn-primary" type="submit" @click = "saveChanges()" >Save Changes</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+<div class="flex min-h-[80vh] flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="text-center sm:mx-auto sm:w-full sm:max-w-md">
+      <h1 class="text-3xl font-bold text-gray-900">Editar Perfil</h1>
+    </div>
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="bg-white px-4 pb-4 pt-8 sm:rounded-lg sm:px-10 sm:pb-6">
+        @form({
+          action: route('users.store'),
+          method: 'POST',
+          class: 'space-y-6',
+        })
+          <div>
+            <label for="full_name" class="block text-sm font-medium text-gray-700" >Nome</label>
+            <div class="mt-1">
+              @!input({
+                type: 'text',
+                name: 'full_name',
+                placeholder : auth.user.full_name,
+                required: true,
+              })
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-3 mb-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="px-xl-3">
-              <button class="btn btn-block btn-secondary">
-                <a href="/" class="text-xl font-semibold text-white">UFRRPG Store</a>
-              </button>
+          <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
+            <div class="mt-1">
+              @!input({
+                type: 'text',
+                name: 'username',
+                placeholder : auth.user.username,
+                required: true,
+              })
             </div>
           </div>
-        </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <div class="mt-1">
+              @!input({
+                type: 'email',
+                name: 'email',
+                placeholder : auth.user.email,
+                required: true,
+              })
+            </div>
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+            <div class="mt-1">
+              @!input({
+                type: 'password',
+                name: 'password',
+                required: true,
+              })
+            </div>
+          </div>
+          <div>
+            <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirme a Senha</label>
+            <div class="mt-1">
+              @!input({
+                type: 'password',
+                name: 'password_confirm',
+                required: true,
+              })
+            </div>
+          </div>
+          <div>
+            @button({
+              type: 'submit',
+              class: 'w-full',
+            })
+              Salvar Mudanças
+            @end
+          </div>
+        @end
       </div>
     </div>
   </div>
-</div>
-</div>
-<script>
-function profileData() {
-  return {
-    name: auth.user.full_name,
-    username: auth.user.username,
-    email: auth.user.email,
-    photo: null,
-    passwords: {
-      current: '',
-      new: '',
-      confirm: ''
-    },
-    changePhoto() {
-      this.$refs.fileInput.click();
-    },
-    uploadPhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.photo = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-    saveChanges() {
-      alert('Changes saved!');
-      console.log({
-        name: this.name,
-        username: this.username,
-        email: this.email,
-        passwords: this.passwords
-      });
-    }
-  };
-}
-</script>
 </body>
 </html>
