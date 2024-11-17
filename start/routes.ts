@@ -52,9 +52,6 @@ router
     router.post('/products', [ProductsController, 'store']).as('products.store')
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy')
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch')
-
-
-
   })
   .use(middleware.admin())
 
