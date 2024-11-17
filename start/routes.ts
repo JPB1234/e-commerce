@@ -53,9 +53,7 @@ router
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy')
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch')
 
-    router.get('/teste',async (ctx)=> {
-      return 'pagina de ADMIN :D'
-    })
+
 
   })
   .use(middleware.admin())

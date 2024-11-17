@@ -7,7 +7,7 @@ export default class AdminMiddleware {
     /**
      * Middleware logic goes here (before the next call)
      */
-    const isAdmin = ctx.auth.user?.admin === true
+    const isAdmin = ctx.auth.user?.admin == true
 
 
     if (!isAdmin){
