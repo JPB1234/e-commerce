@@ -7,9 +7,14 @@ const UsersController = () => import('#controllers/users_controller')
 const ProductsController = () => import('#controllers/products_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const CartController = () => import('#controllers/cart_controller')
+const AvatarsController = () => import('#controllers/avatars_controller')
+
 
 // Rota inicial
 router.on('/').render('pages/home/show').as('home.show')
+
+
+router.get('/avatars/:filename', [AvatarsController, 'show']).as('avatars.show')
 
 // Rotas de autenticação
 router
