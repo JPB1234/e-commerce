@@ -46,7 +46,7 @@ router
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy') // Excluir produto
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch') // Atualizar produto
   })
-  .use(middleware.admin())
+  .use(middleware.admin()) // Certifique-se de que o middleware está correto
 
 // Rota de categorias
 router.get('/categories/:id', [CategoryController, 'show']).as('categories.show')
