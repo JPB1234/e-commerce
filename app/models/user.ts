@@ -26,7 +26,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
-  declare avatarUrl: string | null
+  declare avatar_url: string | null
 
   @column()
   declare admin: boolean

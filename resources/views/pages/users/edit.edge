@@ -17,16 +17,18 @@
             class="space-y-6"
           >
             <div>
-              @if(auth.user.avatarUrl)
-                <div class = "relative">
-                  <img src = "{{auth.user.avatarUrl}}" class = "w-full" />
+              @if(auth.user.avatar_url) 
+                <div class="relative">
+                  <img class="p-20" src="{{ auth.user.avatar_url }}" class="w-full" />
                   <button 
-                  type = "button" class = "absolute top-0 right-0 p-3 rounded-full">
-                  onclick= "(document.forms.editForm.avatarUrl.value = '') || this.parentElement.remove()">
-                  &times;
+                    type="button" 
+                    class="absolute top-0 right-0 p-3 rounded-full"
+                    onclick="document.forms.editForm.avatar_url.value = ''; this.parentElement.remove();">
+                    &times;
                   </button>
-              @endif
-              <input type="hidden" name="avatarUrl" value="{{ auth.user.avatarUrl || ''}}" />
+                </div>
+                @endif
+              <input type="hidden" name="avatar_url" value="{{ auth.user.avatar_url || ''}}" />
                 @!input({
                   type: 'file',
                   label: 'Avatar',

@@ -35,14 +35,14 @@ export default class UsersController {
       return response.redirect().toRoute('auth.create');
     }
 
-    const {avatar, avatarUrl} = await request.validateUsing(updateUserValidator)
+    const {avatar, avatar_url} = await request.validateUsing(updateUserValidator)
 
     if (avatar) {
       await avatar.move(app.makePath('storage/avatars'))
-      auth.user!.avatarUrl = `/avatars/${avatar.fileName}`
-    } else if(!avatarUrl && auth.user?.avatarUrl){
-      await unlink(app.makePath('storage', auth.user.avatarUrl))
-      auth.user!.avatarUrl = null
+      auth.user!.avatar_url = `/avatars/${avatar.fileName}`
+    } else if(!avatar_url && auth.user?.avatar_url){
+      await unlink(app.makePath('storage', auth.user.avatar_url))
+      auth.user!.avatar_url = null
       
     }
 
