@@ -16,7 +16,7 @@ router
   .group(() => {
     router.get('/login', [AuthController, 'create']).as('auth.create')
     router.post('/login', [AuthController, 'store']).as('auth.store')
-    router.get('/logout', [AuthController, 'destroy']).as('auth.destroy')
+    
   })
   .use(middleware.guest())
 
@@ -35,6 +35,7 @@ router
     router.post('/profile/edit', [UsersController, 'update']).as('users.update') // Atualizar perfil
     router.get('/products', [ProductsController, 'index']).as('products.index') // Listar produtos
     router.get('/products/:id', [ProductsController, 'show']).as('products.show') // Mostrar produto
+    router.get('/logout', [AuthController, 'destroy']).as('auth.destroy')
   })
   .use(middleware.auth())
 
