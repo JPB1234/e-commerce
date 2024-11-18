@@ -1,8 +1,40 @@
-  @each(product in products)
-    <li>
-      <a href="{{ route('products.show', { id: product.id }) }}">
-        {{product.name}}
-      </a>
-      - {{ product.price }}
-    </li>
-  @end
+<div class="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+  <form action="{{ route('products.store') }}" method="POST" class="w-full sm:w-96 p-6 bg-white rounded-md shadow-lg space-y-6 mx-auto">
+
+    <h2 class="text-2xl font-semibold text-gray-800 text-center">Criar Novo Produto</h2>
+
+    <!-- Nome do Produto -->
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700">Nome do Produto</label>
+      <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+    </div>
+
+    <!-- Preço -->
+    <div class="mb-4">
+      <label for="price" class="block text-sm font-medium text-gray-700">Preço</label>
+      <input type="number" id="price" name="price" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+    </div>
+
+    <!-- Descrição -->
+    <div class="mb-4">
+      <label for="description" class="block text-sm font-medium text-gray-700">Descrição (opcional)</label>
+      <textarea id="description" name="description" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="4"></textarea>
+    </div>
+
+    <!-- Categoria -->
+    <div class="mb-4">
+      <label for="categoryId" class="block text-sm font-medium text-gray-700">Categoria</label>
+      <select id="categoryId" name="categoryId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+        <option value="">Selecione uma categoria</option>
+        @each(category in categories)
+          <option value="{{ category.id }}">{{ category.name }}</option>
+        @end
+      </select>
+    </div>
+
+    <!-- Botão de Submit -->
+    <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      Criar Produto
+    </button>
+  </form>
+</div>
