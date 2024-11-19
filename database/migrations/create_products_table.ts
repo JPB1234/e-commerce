@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.string('name')
       table.decimal('price').notNullable()
       table.text('description').notNullable()
-      table.integer('category_id').unsigned().references('id').inTable('categories').onDelete('CASCADE')
+      table.integer('category_id').unsigned().notNullable().references('id').inTable('categories').onDelete('CASCADE')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')
