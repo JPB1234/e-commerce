@@ -29,11 +29,11 @@
       </div>
       
       <!-- Slider controls -->
-      <button @click="currentSlide = (currentSlide - 1 + totalSlides) % totalSlides" class="absolute top-1/2 left-0 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
+      <button @click="currentSlide = (currentSlide - 1 + totalSlides) % totalSlides" class="absolute top-1/2 left-5 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full" >
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
       </button>
       
-      <button @click="currentSlide = (currentSlide + 1) % totalSlides" class="absolute top-1/2 right-0 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
+      <button @click="currentSlide = (currentSlide + 1) % totalSlides" class="absolute top-1/2 right-5 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg>
       </button>
       
