@@ -5,21 +5,27 @@ import Category from "#models/category"
 export default class ProductsController {
   
   // Lista de produtos com paginação e filtro por nome
-  async index({ view, request }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = 10
+  async index({ request, view }: HttpContext) {
+    const search = request.input('search');
+    const categoryId = request.input('category');
 
-    const payload = request.only(['name'])
+    const query = Product.query().preload('category');
 
-    const query = Product.query()
-
-    if (payload.name && payload.name.length > 0) {
-      query.where('name', 'like', `%${payload.name}%`)
+    if (search) {
+      query.where('name', 'like');
     }
 
-    const products = await query.paginate(page, limit)
+    if (categoryId) {
+      query.where('categoryId', categoryId);
+    }
 
-    return view.render('pages/products/index', { products })
+    const products = await query;
+    const categories = await Category.all();
+
+    return view.render('pages/products/index', {
+      products,
+      categories,
+    });
   }
 
   // Exibe o produto, esperando que o id do produto seja fornecido na URL
