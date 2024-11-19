@@ -41,12 +41,10 @@ router
   })
   .use(middleware.auth())
 
-
-  router.get('/products/create', [ProductsController, 'create']).as('products.create')
 // Rotas de admin para gerenciamento de produtos
 router
   .group(() => {
-     // Criar produto
+    router.get('/products/create', [ProductsController, 'create']).as('products.create') // Criar produto
     router.post('/products', [ProductsController, 'store']).as('products.store') // Salvar novo produto
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy') // Excluir produto
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch') // Atualizar produto
