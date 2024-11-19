@@ -19,7 +19,7 @@ export default class ProductsController {
 
     const products = await query.paginate(page, limit)
 
-    return view.render('pages/products/index', { products })
+    return view.render('pages/products/create', { products })
   }
 
   // Exibe o produto, esperando que o id do produto seja fornecido na URL
@@ -45,10 +45,14 @@ export default class ProductsController {
   }
 
   // Exibe a página de criação do produto
-  public async create({ view }: HttpContext) {
-    const categories = await Category.all()
-    console.log("vtmnc")
-    return view.render('pages/products/create', { categories }) // Exibe o formulário de criação
+  async create({ view }: HttpContext) {
+    try {
+      const categories = await Category.all(); // Obtém as categorias
+      return view.render('pages/products/create', { categories: categories});
+    } catch (error) {
+      console.error('Erro ao carregar categorias para criação de produtos:', error);
+      return view.render('errors/500', { message: 'Erro ao carregar categorias.' });
+    }
   }
 
   // Atualiza as informações do produto

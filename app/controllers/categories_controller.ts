@@ -3,17 +3,8 @@ import Category from "#models/category"
 
 export default class CategoriesController {
   public async index({ view }: HttpContext) {
-    try {
       const categories = await Category.all();  // Obtém todas as categorias da base de dados
-      
-      // Garantindo que o retorno seja um array
-      return view.render('pages/categories/index', { 
-        categories: categories.toJSON() || []  // Passando um array vazio caso categories seja inválido
-      });
-    } catch (error) {
-      console.error('Erro ao carregar categorias:', error);
-      return view.render('pages/categories/index', { categories: [] });  // Caso ocorra um erro, passa um array vazio
-    }
+      return view.render('pages/products/index', {categories: categories});
   }
 
   // Renderiza o formulário de criação
