@@ -60,8 +60,6 @@ router
     router.get('/categories/:id', [CategoryController, 'show']).as('categories.show') // Exibir categoria
   })
   .use(middleware.admin()) // Protegendo o grupo com o middleware de admin
-
-
 // Rotas de ajuda
 router
   .group(() => {

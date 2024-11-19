@@ -8,20 +8,16 @@
       <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" value="{{ old('name') }}" required>
     </div>
 
-    <div class="mt-4">
-      <label for="categoryId" class="block text-sm font-medium text-gray-700">Categoria</label>
-      <select
-        name="categoryId"
-        id="categoryId"
-        required
-        class="w-full px-4 py-2 border rounded-lg shadow-sm"
-      >
-        <option value="" disabled selected>Selecione</option>
+    <!-- Categoria -->
+    <div class="mb-4">
+      <label for="categoryId" class="block text-sm font-medium text-white">Categoria</label>
+      <select id="categoryId" name="categoryId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="">Selecione uma categoria</option>
         @each(category in categories)
-          <option value="{{ category.id }}">{{ category.name }}</option>
-        @endeach
+          <option value="{{ category.id }}" {{ old('categoryId') == category.id ? 'selected' : '' }}>{{ category.name }}</option>
+        @end
       </select>
-    </div
+    </div>
 
     <!-- Preço -->
     <div class="mb-4">
