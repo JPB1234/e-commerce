@@ -1,24 +1,86 @@
 @layouts.app()
 
 <div class="container mx-auto py-8">
-  <!-- Seção de Boas-vindas -->
-  <section class="text-center mb-12">
-    <h1 class="text-4xl font-bold mb-2">Boas vindas à UFRRPG 🎲</h1>
-    <p class="text-gray-700">Encontre produtos diversos para sua mesa de RPG</p>
+
+  <section>
+    <div x-data="{ currentSlide: 0, totalSlides: 5 }" class="relative w-full">
+      <!-- Carousel wrapper -->
+      <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <!-- Item 1 -->
+        <div x-show="currentSlide === 0" class="transition-all duration-700 ease-in-out">
+          <img src="/images/teste1.jpg" class="w-full h-full object-cover" alt="Slide 1">
+        </div>
+        <!-- Item 2 -->
+        <div x-show="currentSlide === 1" class="transition-all duration-700 ease-in-out">
+          <img src="/images/teste2.jpg" class="w-full h-full object-cover" alt="Slide 2">
+        </div>
+        <!-- Item 3 -->
+        <div x-show="currentSlide === 2" class="transition-all duration-700 ease-in-out">
+          <img src="/images/teste3.jpg" class="w-full h-full object-cover" alt="Slide 3">
+        </div>
+        <!-- Item 4 -->
+        <div x-show="currentSlide === 3" class="transition-all duration-700 ease-in-out">
+          <img src="/images/teste1.jpg" class="w-full h-full object-cover" alt="Slide 4">
+        </div>
+        <!-- Item 5 -->
+        <div x-show="currentSlide === 4" class="transition-all duration-700 ease-in-out">
+          <img src="/images/teste4.jpg" class="w-full h-full object-cover" alt="Slide 5">
+        </div>
+      </div>
+      
+      <!-- Slider controls -->
+      <button @click="currentSlide = (currentSlide - 1 + totalSlides) % totalSlides" class="absolute top-1/2 left-0 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+      
+      <button @click="currentSlide = (currentSlide + 1) % totalSlides" class="absolute top-1/2 right-0 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg>
+      </button>
+      
+      <!-- Slider indicators -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
+        <template x-for="index in totalSlides" :key="index">
+          <button 
+            @click="currentSlide = index - 1" 
+            :class="{
+              'bg-purple-500': currentSlide === (index - 1),
+              'bg-white': currentSlide !== (index - 1)
+            }"
+            class="w-3 h-3 rounded-full transition-colors duration-300"
+            aria-label="Slide {{ index }}"
+          ></button>
+        </template>
+      </div>
+    </div>
   </section>
 
   <!-- Seção de Produtos em Destaque -->
   <section>
-    <h2 class="text-2xl font-semibold text-center mb-6">Produtos em Destaque</h2>
+    <h2 class="text-2xl font-semibold text-center mb-6 py-5">Produtos em Destaque</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Exemplo de Produto -->
-      <div class="border rounded-lg overflow-hidden shadow-lg">
+      <div class="relative border rounded-lg overflow-hidden shadow-lg">
         <img src="https://via.placeholder.com/150" alt="Produto" class="w-full h-48 object-cover">
         <div class="p-4">
           <h3 class="font-semibold text-lg">Nome do Produto</h3>
           <p class="text-gray-500">Descrição breve do produto.</p>
           <p class="text-blue-600 font-bold mt-2">R$ 99,90</p>
           <button class="bg-blue-500 text-white px-4 py-2 mt-4 w-full rounded-lg hover:bg-blue-600">Adicionar ao Carrinho</button>
+          
+          <!-- Botões de administração (visíveis apenas para o admin) -->
+          @if(auth.user && auth.user.admin)
+          <div class="absolute top-2 right-2 flex space-x-2">
+            <!-- Botão de editar -->
+            <button class="bg-yellow-500 text-white p-2 rounded-full hover:bg-yellow-600">
+              <span class="iconify" data-icon="akar-icons:edit" style="font-size: 20px;"></span>
+            </button>
+            
+            <!-- Botão de excluir -->
+            <button class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600">
+              <span class="iconify" data-icon="ant-design:delete-outlined" style="font-size: 20px;"></span>
+            </button>
+          </div>
+          @endif
         </div>
       </div>
       <!-- Repetir esse bloco para mais produtos -->

@@ -1,14 +1,15 @@
-<nav class="bg-[#4B27A8] text-white py-1 px-4">
-  <div class="container mx-auto flex items-center justify-between">
+<nav class="bg-[#4B27A8] text-white py-1 px-3">
+<div class="container mx-auto max-w-full px-40 lg:px-50 flex items-center justify-between flex-wrap">
+
     <!-- Logo -->
-    <div class="flex items-center">
+    <div class="flex items-center flex-shrink-0">
       <a href="{{ route('home.show') }}" class="flex items-center">
         <img src="/images/logo.png" alt="Logo" class="h-24 w-auto mr-4" />
       </a>
     </div>
 
     <!-- Barra de pesquisa -->
-    <div class="flex-1 mx-4">
+    <div class="flex-1 mx-4 hidden md:block">
       <form action="/search" method="GET" class="relative">
         <input
           type="text"
@@ -57,10 +58,10 @@
               <!-- Nome completo e email -->
               <div>
                 <span class="block text-sm font-medium text-gray-900 dark:text-white">
-                  {{ auth.user.full_name || 'Nome não disponível' }} <!-- Exibe o nome completo ou uma mensagem alternativa -->
+                  {{ auth.user.full_name || 'Nome não disponível' }}
                 </span>
                 <span class="block text-xs italic text-[#4eb3c8]">
-                  {{ auth.user.email }} <!-- Exibe o email -->
+                  {{ auth.user.email }}
                 </span>
               </div>
             </div>
@@ -109,14 +110,12 @@
       </div>
 
       @if(auth.user && auth.user.admin)
-      <div>
+      <div class="hidden md:block">
           <a 
               href="{{ route('products.create') }}"
-              class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">              Criar Produto
-          </a>
+              class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Criar Produto</a>
       </div>
       @endif
-    
 
       <!-- Carrinho -->
       <a href="/cart" class="relative hover:text-[#4eb3c8] transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100">

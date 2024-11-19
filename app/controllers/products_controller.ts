@@ -24,7 +24,6 @@ export default class ProductsController {
 
   // Exibe o produto, esperando que o id do produto seja fornecido na URL
   async show({ view, params }: HttpContext) {
-    // Certifique-se de que o produto existe
     try {
       const product = await Product.findOrFail(params.id)
       await product.load('category') // Carrega a categoria associada
@@ -40,16 +39,13 @@ export default class ProductsController {
   async store({ request, response }: HttpContext) {
     const payload = request.only(['name', 'price', 'description', 'categoryId']) // Dados do formulário
     
-    // Criação do produto
+
     const product = await Product.create(payload)
-    
-    // Redirecionamento para a página do produto recém-criado
     return response.redirect().toRoute('products.show', { id: product.id }) // Redireciona para a visualização do produto
   }
 
   // Exibe a página de criação do produto
-  async create({ view }: HttpContext) {
-    // Carrega as categorias para mostrar no formulário de criação
+  public async create({ view }: HttpContext) {
     const categories = await Category.all()
     return view.render('pages/products/create', { categories }) // Exibe o formulário de criação
   }

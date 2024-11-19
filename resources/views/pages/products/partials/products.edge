@@ -11,7 +11,7 @@
     <!-- Categoria -->
     <div class="mb-4">
       <label for="categoryId" class="block text-sm font-medium text-white">Categoria</label>
-      <select id="categoryId" name="categoryId" class="mt-1 block w-full px-4 py- border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+      <select id="categoryId" name="categoryId" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
         <option value="">Selecione uma categoria</option>
         @each(category in categories)
           <option value="{{ category.id }}" {{ old('categoryId') == category.id ? 'selected' : '' }}>{{ category.name }}</option>
