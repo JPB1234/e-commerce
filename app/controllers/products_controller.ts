@@ -47,6 +47,7 @@ export default class ProductsController {
   // Exibe a página de criação do produto
   public async create({ view }: HttpContext) {
     const categories = await Category.all()
+    console.log("vtmnc")
     return view.render('pages/products/create', { categories }) // Exibe o formulário de criação
   }
 

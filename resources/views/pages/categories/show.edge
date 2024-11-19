@@ -1,9 +1,26 @@
-@layouts.app()
-  {{ category.name }}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Categoria</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
 
-  @each(product in category.products)
-    <div>
-      <a href="{{ route('products.show', { id: product.id }) }}">{{ product.name }}</a>
+<body class="bg-gray-100">
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold mb-6">Detalhes da Categoria: {{ category.name }}</h1>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <p><strong>ID:</strong> {{ category.id }}</p>
+      <p><strong>Nome:</strong> {{ category.name }}</p>
+      <p><strong>Criada em:</strong> {{ category.created_at }}</p>
+      <p><strong>Atualizada em:</strong> {{ category.updated_at }}</p>
     </div>
-  @end
-@end
+
+    <a href="{{ route('categories.index') }}" class="text-blue-500 hover:text-blue-600 mt-4 inline-block">Voltar para a lista de categorias</a>
+  </main>
+</body>
+</html>
