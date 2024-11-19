@@ -1,0 +1,36 @@
+@layouts.app()
+
+<div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">Adicionar Nova Categoria</h2>
+  
+  <!-- Exibe mensagens de sucesso ou erro -->
+  @if(session.has('success'))
+    <div class="p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg">
+      {{ session.get('success') }}
+    </div>
+  @endif
+  @if(session.has('error'))
+    <div class="p-4 mb-4 text-sm text-red-800 bg-red-100 rounded-lg">
+      {{ session.get('error') }}
+    </div>
+  @endif
+
+  <!-- Formulário -->
+  <form action="{{ route('categories.store') }}" method="POST">
+    <div class="mb-4">
+      <label for="name" class="block text-gray-700">Nome da Categoria</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+        placeholder="Digite o nome da categoria"
+        required
+      />
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+      Adicionar Categoria
+    </button>
+  </form>
+</div>
+@end

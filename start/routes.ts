@@ -55,7 +55,12 @@ router
   .use(middleware.admin()) // Certifique-se de que o middleware está correto
 
 // Rota de categorias
-router.get('/categories/:id', [CategoryController, 'show']).as('categories.show')
+router
+  .group(() => {
+    router.get('/categories/create',[CategoryController, 'create']).as('categories.create')
+    router.post('/categories', [CategoryController,'store']).as('categories.store')
+  })
+  .use(middleware.admin()) // Protegendo o grupo com o middleware de admin
 
 // Rotas de ajuda
 router

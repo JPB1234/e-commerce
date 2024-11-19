@@ -1,91 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Loja de RPG</title>
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+</head>
 @layouts.app()
+<body class="bg-gray-100">
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <!-- Banner -->
+        <section class="mb-8">
+            <div class="relative h-64 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg overflow-hidden">
+                <img src="/images/teste1.jpg" alt="Banner da Loja de RPG" class="w-full h-full object-cover opacity-50">
+                <div class="absolute inset-0 flex items-center justify-center text-center">
+                    <div class="text-white">
+                        <h1 class="text-4xl font-bold mb-4">Bem-vindo à Loja de RPG</h1>
+                        <p class="text-lg">Aventure-se com os melhores produtos para RPG!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="container mx-auto py-8">
+        <!-- Barra de Busca -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Encontre o que procura</h2>
+            <div class="relative">
+                <input type="text" placeholder="Buscar produtos..." class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                <button class="absolute right-2 top-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    <span class="iconify" data-icon="mdi-magnify"></span>
+                </button>
+            </div>
+        </section>
 
-  <section>
-    <div x-data="{ currentSlide: 0, totalSlides: 5 }" class="relative w-full">
-      <!-- Carousel wrapper -->
-      <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-        <!-- Item 1 -->
-        <div x-show="currentSlide === 0" class="transition-all duration-700 ease-in-out">
-          <img src="/images/teste1.jpg" class="w-full h-full object-cover" alt="Slide 1">
-        </div>
-        <!-- Item 2 -->
-        <div x-show="currentSlide === 1" class="transition-all duration-700 ease-in-out">
-          <img src="/images/teste2.jpg" class="w-full h-full object-cover" alt="Slide 2">
-        </div>
-        <!-- Item 3 -->
-        <div x-show="currentSlide === 2" class="transition-all duration-700 ease-in-out">
-          <img src="/images/teste3.jpg" class="w-full h-full object-cover" alt="Slide 3">
-        </div>
-        <!-- Item 4 -->
-        <div x-show="currentSlide === 3" class="transition-all duration-700 ease-in-out">
-          <img src="/images/teste1.jpg" class="w-full h-full object-cover" alt="Slide 4">
-        </div>
-        <!-- Item 5 -->
-        <div x-show="currentSlide === 4" class="transition-all duration-700 ease-in-out">
-          <img src="/images/teste4.jpg" class="w-full h-full object-cover" alt="Slide 5">
-        </div>
-      </div>
-      
-      <!-- Slider controls -->
-      <button @click="currentSlide = (currentSlide - 1 + totalSlides) % totalSlides" class="absolute top-1/2 left-5 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full" >
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
-      </button>
-      
-      <button @click="currentSlide = (currentSlide + 1) % totalSlides" class="absolute top-1/2 right-5 transform -translate-y-1/2 z-30 bg-gray-800 text-white p-2 rounded-full">
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"></path></svg>
-      </button>
-      
-      <!-- Slider indicators -->
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
-        <template x-for="index in totalSlides" :key="index">
-          <button 
-            @click="currentSlide = index - 1" 
-            :class="{
-              'bg-purple-500': currentSlide === (index - 1),
-              'bg-white': currentSlide !== (index - 1)
-            }"
-            class="w-3 h-3 rounded-full transition-colors duration-300"
-            aria-label="Slide {{ index }}"
-          ></button>
-        </template>
-      </div>
-    </div>
-  </section>
+        <!-- Categorias -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Categorias</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Categorias dinâmicas podem ser passadas aqui pelo Adonis -->
+                <a href="/categorias/dados" class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg">
+                    <img src="/images/dados.jpg" alt="Dados" class="w-full h-40 object-cover">
+                    <div class="p-4 flex items-center">
+                        <span class="iconify text-2xl mr-2" data-icon="mdi-dice-d20"></span>
+                        <h3 class="text-lg font-semibold">Dados</h3>
+                    </div>
+                </a>
+                <a href="/categorias/livros" class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg">
+                    <img src="/images/livros.jpg" alt="Livros" class="w-full h-40 object-cover">
+                    <div class="p-4 flex items-center">
+                        <span class="iconify text-2xl mr-2" data-icon="mdi-book"></span>
+                        <h3 class="text-lg font-semibold">Livros</h3>
+                    </div>
+                </a>
+                <a href="/categorias/minis" class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg">
+                    <img src="/images/minis.jpg" alt="Miniaturas" class="w-full h-40 object-cover">
+                    <div class="p-4 flex items-center">
+                        <span class="iconify text-2xl mr-2" data-icon="mdi-chess-king"></span>
+                        <h3 class="text-lg font-semibold">Miniaturas</h3>
+                    </div>
+                </a>
+                <a href="/categorias/acessorios" class="block bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg">
+                    <img src="/images/acessorios.jpg" alt="Acessórios" class="w-full h-40 object-cover">
+                    <div class="p-4 flex items-center">
+                        <span class="iconify text-2xl mr-2" data-icon="mdi-bag-personal"></span>
+                        <h3 class="text-lg font-semibold">Acessórios</h3>
+                    </div>
+                </a>
+            </div>
+        </section>
 
-  <!-- Seção de Produtos em Destaque -->
-  <section>
-    <h2 class="text-2xl font-semibold text-center mb-6 py-5">Produtos em Destaque</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Exemplo de Produto -->
-      <div class="relative border rounded-lg overflow-hidden shadow-lg">
-        <img src="https://via.placeholder.com/150" alt="Produto" class="w-full h-48 object-cover">
-        <div class="p-4">
-          <h3 class="font-semibold text-lg">Nome do Produto</h3>
-          <p class="text-gray-500">Descrição breve do produto.</p>
-          <p class="text-blue-600 font-bold mt-2">R$ 99,90</p>
-          <button class="bg-blue-500 text-white px-4 py-2 mt-4 w-full rounded-lg hover:bg-blue-600">Adicionar ao Carrinho</button>
-          
-          <!-- Botões de administração (visíveis apenas para o admin) -->
-          @if(auth.user && auth.user.admin)
-          <div class="absolute top-2 right-2 flex space-x-2">
-            <!-- Botão de editar -->
-            <button class="bg-yellow-500 text-white p-2 rounded-full hover:bg-yellow-600">
-              <span class="iconify" data-icon="akar-icons:edit" style="font-size: 20px;"></span>
-            </button>
-            
-            <!-- Botão de excluir -->
-            <button class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600">
-              <span class="iconify" data-icon="ant-design:delete-outlined" style="font-size: 20px;"></span>
-            </button>
-          </div>
-          @endif
-        </div>
-      </div>
-      <!-- Repetir esse bloco para mais produtos -->
-    </div>
-  </section>
-</div>
+        <!-- Produtos em destaque -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Produtos em Destaque</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Card de produto -->
+                <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg">
+                    <img src="/images/produto1.jpg" alt="Produto 1" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold">Kit de Dados Premium</h3>
+                        <p class="text-sm text-gray-600">Conjunto de dados para RPG</p>
+                        <p class="text-xl font-bold text-green-600">R$ 99,90</p>
+                        <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Depoimentos -->
+        <section class="mb-8" x-data="{currentTestimonial: 0}">
+            <h2 class="text-2xl font-bold mb-4">O que nossos clientes dizem</h2>
+            <div class="relative bg-white p-4 shadow-md rounded-lg">
+                <div x-show="currentTestimonial === 0">
+                    <p class="text-gray-700">"A qualidade dos produtos é incrível! Adoro comprar aqui!"</p>
+                    <span class="block mt-2 text-sm font-semibold text-gray-600">- João Silva</span>
+                </div>
+                <div x-show="currentTestimonial === 1" x-cloak>
+                    <p class="text-gray-700">"Entrega rápida e excelente atendimento ao cliente."</p>
+                    <span class="block mt-2 text-sm font-semibold text-gray-600">- Maria Oliveira</span>
+                </div>
+                <div class="flex justify-between mt-4">
+                    <button @click="currentTestimonial = (currentTestimonial === 0) ? 1 : 0" class="text-blue-500">Anterior</button>
+                    <button @click="currentTestimonial = (currentTestimonial === 1) ? 0 : 1" class="text-blue-500">Próximo</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="mb-8">
+            <div class="bg-blue-500 text-white rounded-lg p-6 text-center">
+                <h2 class="text-2xl font-bold mb-2">Assine nossa newsletter</h2>
+                <p class="mb-4">Receba novidades e promoções exclusivas diretamente no seu email.</p>
+                <form action="/newsletter" method="POST" class="flex flex-col sm:flex-row justify-center gap-2">
+                    <input type="email" name="email" placeholder="Digite seu email" class="p-2 rounded-lg w-full sm:w-auto">
+                    <button type="submit" class="bg-white text-blue-500 px-4 py-2 rounded-lg hover:bg-gray-200">Assinar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
 @end
