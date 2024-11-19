@@ -1,25 +1,30 @@
-import { HttpContext } from "@adonisjs/core/http"
-import Product from "#models/product"
-import Category from "#models/category"
+import { HttpContext } from "@adonisjs/core/http";
+import Product from "#models/product";
+import Category from "#models/category";
+
+
 
 export default class ProductsController {
   
   // Lista de produtos com paginação e filtro por nome
-  async index({ view, request }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = 10
+  async index({ request, view }: HttpContext) {
+    
+    const category_id = request.input('category');
 
-    const payload = request.only(['name'])
+    const query = Product.query().preload('category');
 
-    const query = Product.query()
-
-    if (payload.name && payload.name.length > 0) {
-      query.where('name', 'like', `%${payload.name}%`)
+    
+    if (category_id) {
+      query.where('category_id', category_id);
     }
 
-    const products = await query.paginate(page, limit)
+    const products = await query;
+    const categories = await Category.all();
 
-    return view.render('pages/products/index', { products })
+    return view.render('pages/products/index', {
+      products,
+      categories,
+    });
   }
 
   // Exibe o produto, esperando que o id do produto seja fornecido na URL
@@ -37,17 +42,18 @@ export default class ProductsController {
 
   // Criação de novo produto
   async store({ request, response }: HttpContext) {
-    const payload = request.only(['name', 'price', 'description', 'categoryId']) // Dados do formulário
+    const payload = request.only(['name', 'price', 'description', 'category_id']) // Dados do formulário
     
-
+      
     const product = await Product.create(payload)
     return response.redirect().toRoute('products.show', { id: product.id }) // Redireciona para a visualização do produto
   }
 
   // Exibe a página de criação do produto
-  public async create({ view }: HttpContext) {
+  async create({ view }: HttpContext) {
+
     const categories = await Category.all()
-    console.log("vtmnc")
+    
     return view.render('pages/products/create', { categories }) // Exibe o formulário de criação
   }
 
@@ -55,7 +61,7 @@ export default class ProductsController {
   async patch({ params, request }: HttpContext) {
     const product = await Product.findOrFail(params.id)
 
-    const payload = request.only(['name', 'price', 'description', 'categoryId'])
+    const payload = request.only(['name', 'price', 'description', 'category_id'])
     product.merge(payload) // Atualiza os dados do produto
 
     await product.save() // Salva as mudanças

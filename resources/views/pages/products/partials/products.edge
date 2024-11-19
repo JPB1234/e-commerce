@@ -1,0 +1,28 @@
+  <main class="container mx-auto py-6">
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-xl font-bold">Lista de Produtos</h1>
+      <a href="{{ route('products.create') }}" class="bg-blue-500 text-white py-2 px-4 rounded">
+        Adicionar Produto
+      </a>
+    </header>
+    <section>
+      <div class="grid grid-cols-3 gap-6">
+        @each(product in products)
+          <div class="border p-4 rounded shadow">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-40 object-cover rounded mb-2">
+            <h2 class="text-lg font-semibold">{{ product.name }}</h2>
+            <p class="text-gray-700">{{ product.description }}</p>
+            <p class="text-green-600 font-bold">R$ {{ product.price.toFixed(2) }}</p>
+            <div class="flex justify-between mt-4">
+              <a href="{{ route('products.edit', { id: product.id }) }}" class="text-blue-500">Editar</a>
+              <form action="{{ route('products.destroy', { id: product.id }) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-red-500">Excluir</button>
+              </form>
+            </div>
+          </div>
+        @end
+      </div>
+    </section>
+  </main>
