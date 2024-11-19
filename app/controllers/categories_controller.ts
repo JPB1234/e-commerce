@@ -4,7 +4,7 @@ import Category from "#models/category"
 export default class CategoriesController {
   public async index({ view }: HttpContext) {
       const categories = await Category.all();  // Obtém todas as categorias da base de dados
-      return view.render('pages/products/index', {categories: categories});
+      return view.render('pages/categories/index', {categories: categories});
   }
 
   // Renderiza o formulário de criação

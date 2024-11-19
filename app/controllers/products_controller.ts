@@ -5,21 +5,23 @@ import Category from "#models/category"
 export default class ProductsController {
   
   // Lista de produtos com paginação e filtro por nome
-  async index({ view, request }: HttpContext) {
-    const page = request.input('page', 1)
-    const limit = 10
+  async index({ request, view }: HttpContext) {
+    const categoryId = request.input('category');
 
-    const payload = request.only(['name'])
+    const query = Product.query().preload('category');
 
-    const query = Product.query()
 
-    if (payload.name && payload.name.length > 0) {
-      query.where('name', 'like', `%${payload.name}%`)
+    if (categoryId) {
+      query.where('categoryId', categoryId);
     }
 
-    const products = await query.paginate(page, limit)
+    const products = await query;
+    const categories = await Category.all();
 
-    return view.render('pages/products/create', { products })
+    return view.render('pages/products/index', {
+      products,
+      categories,
+    });
   }
 
   // Exibe o produto, esperando que o id do produto seja fornecido na URL
@@ -37,7 +39,7 @@ export default class ProductsController {
 
   // Criação de novo produto
   async store({ request, response }: HttpContext) {
-    const payload = request.only(['name', 'price', 'description', 'category_id']) // Dados do formulário
+    const payload = request.only(['name', 'price', 'description', 'categoryId']) // Dados do formulário
     
 
     const product = await Product.create(payload)
@@ -46,20 +48,15 @@ export default class ProductsController {
 
   // Exibe a página de criação do produto
   async create({ view }: HttpContext) {
-    try {
-      const categories = await Category.all(); // Obtém as categorias
-      return view.render('pages/products/create', { categories: categories});
-    } catch (error) {
-      console.error('Erro ao carregar categorias para criação de produtos:', error);
-      return view.render('errors/500', { message: 'Erro ao carregar categorias.' });
-    }
+    const categories = await Category.all()
+    return view.render('pages/products/create', { categories })
   }
 
   // Atualiza as informações do produto
   async patch({ params, request }: HttpContext) {
     const product = await Product.findOrFail(params.id)
 
-    const payload = request.only(['name', 'price', 'description', 'category_id'])
+    const payload = request.only(['name', 'price', 'description', 'categoryId'])
     product.merge(payload) // Atualiza os dados do produto
 
     await product.save() // Salva as mudanças

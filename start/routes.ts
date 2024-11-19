@@ -12,6 +12,7 @@ const AvatarsController = () => import('#controllers/avatars_controller')
 // Rota inicial
 router.on('/').render('pages/home/show').as('home.show')
 
+// Rota de Avatar
 router.get('/avatars/:filename', [AvatarsController, 'show']).as('avatars.show')
 
 // Rotas de autenticação
@@ -60,6 +61,7 @@ router
     router.get('/categories/:id', [CategoryController, 'show']).as('categories.show') // Exibir categoria
   })
   .use(middleware.admin()) // Protegendo o grupo com o middleware de admin
+  
 // Rotas de ajuda
 router
   .group(() => {
