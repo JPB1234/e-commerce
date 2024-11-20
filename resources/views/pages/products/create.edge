@@ -1,64 +1,118 @@
 @layouts.app()
-  <main class="container mx-auto py-6">
-    <h1 class="text-xl font-bold mb-4">Adicionar Novo Produto</h1>
-    @form({ action: route('products.store'), method: 'POST', enctype: 'multipart/form-data' })
-      <fieldset class="mb-4">
-        <legend class="text-lg font-semibold">Informações do Produto</legend>
-        <div class="mb-3">
-          <label for="name" class="block font-medium">Nome do Produto</label>
-          @!input({
-            name: 'name',
-            type: 'text',
-            class: 'border p-2 w-full',
-            placeholder: 'Digite o nome do produto',
-            required: true
-          })
+
+<main class="container mx-auto py-10 px-6 max-w-3xl bg-white rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Adicionar Novo Produto</h1>
+  
+  @form({ action: route('products.store'), method: 'POST', enctype: 'multipart/form-data', class: 'space-y-6' })
+    <!-- Informações do Produto -->
+    <fieldset class="border border-gray-200 rounded-md p-6">
+      <legend class="text-lg font-semibold text-indigo-600 px-2">Informações do Produto</legend>
+      
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700 font-medium mb-1">Nome do Produto</label>
+        @!input({
+          name: 'name',
+          type: 'text',
+          class: 'border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+          placeholder: 'Digite o nome do produto',
+          required: true
+        })
+      </div>
+      
+      <div class="mb-4">
+        <label for="price" class="block text-gray-700 font-medium mb-1">Preço</label>
+        @!input({
+          name: 'price',
+          type: 'number',
+          step: '0.01',
+          class: 'border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+          placeholder: 'Digite o preço do produto',
+          required: true
+        })
+      </div>
+      
+      <div class="mb-4">
+        <label for="description" class="block text-gray-700 font-medium mb-1">Descrição</label>
+        <textarea name="description" id="description" class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="4" placeholder="Descrição do produto"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- Categoria -->
+    <fieldset class="border border-gray-200 rounded-md p-6">
+      <legend class="text-lg font-semibold text-indigo-600 px-2">Categoria</legend>
+      
+      <div class="mt-4">
+        <label for="category_id" class="block text-gray-700 font-medium mb-1">Categoria</label>
+        <select
+          name="category_id"
+          id="category_id"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="" disabled selected>Selecione</option>
+          @each(category in categories)
+            <option value="{{ category.id }}">{{ category.name }}</option>
+          @endeach
+        </select>
+      </div>
+    </fieldset>
+
+    <!-- Upload de Imagem -->
+    <fieldset class="border border-gray-200 rounded-md p-6" x-data="productForm">
+      <legend class="text-lg font-semibold text-indigo-600 px-2">Imagem do Produto</legend>
+      
+      <div class="mb-3">
+        <label for="image" class="block text-gray-700 font-medium mb-1">Upload de Imagem</label>
+        <label 
+          for="image" 
+          class="cursor-pointer inline-block bg-indigo-500 text-white py-2 px-4 rounded-lg shadow hover:bg-indigo-600 transition"
+        >
+          Escolher Imagem
+        </label>
+        <input 
+          type="file" 
+          name="image" 
+          id="image" 
+          class="hidden" 
+          accept="image/*" 
+          @change="previewImage"
+        >
+      </div>
+      
+      <!-- Visualização da Imagem -->
+      <div x-show="imagePreview" class="mt-4 text-center">
+        <p class="text-sm text-gray-600">Pré-visualização da imagem:</p>
+        <div class="mt-2 inline-block p-2 border border-gray-200 rounded-lg shadow">
+          <img :src="imagePreview" alt="Pré-visualização" class="max-w-full h-auto rounded">
         </div>
-        <div class="mb-3">
-          <label for="price" class="block font-medium">Preço</label>
-          @!input({
-            name: 'price',
-            type: 'number',
-            step: '0.01',
-            class: 'border p-2 w-full',
-            placeholder: 'Digite o preço do produto',
-            required: true
-          })
-        </div>
-        <div class="mb-3">
-          <label for="description" class="block font-medium">Descrição</label>
-          <textarea name="description" id="description" class="border p-2 w-full" rows="4" placeholder="Descrição do produto"></textarea>
-        </div>
-      </fieldset>
-      <fieldset class="mb-4">
-        <legend class="text-lg font-semibold">Categoria</legend>
-        <div class="mt-4">
-          <label for="category_id" class="block text-sm font-medium text-gray-700">Categoria</label>
-          <select
-            name="category_id"
-            id="category_id"
-            class="w-full px-4 py-2 border rounded-lg shadow-sm"
-          >
-            <option value="" disabled selected>Selecione</option>
-            @each(category in categories)
-              <option value="{{ category.id }}">{{ category.name }}</option>
-            @endeach
-          </select>
-        </div
-      </fieldset>
-      <fieldset class="mb-4">
-        <legend class="text-lg font-semibold">Imagem do Produto</legend>
-        <div class="mb-3">
-          <label for="image" class="block font-medium">Upload de imagem</label>
-          <input type="file" name="image" id="image" class="border p-2 w-full" accept="image/*">
-        </div>
-      </fieldset>
-      @button({
-        type: 'submit',
-        class: 'bg-blue-500 text-white py-2 px-4 rounded'
-      })
-        Salvar Produto
-      @end
+      </div>
+    </fieldset>
+
+    <!-- Botão de Enviar -->
+    @button({
+      type: 'submit',
+      class: 'w-full bg-indigo-500 text-white py-3 px-4 rounded-lg shadow-md hover:bg-indigo-600 transition'
+    })
+      Salvar Produto
     @end
-  </main>
+  @end
+</main>
+
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('productForm', () => ({
+      imagePreview: null,
+
+      previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.imagePreview = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      },
+    }));
+  });
+</script>
 @end

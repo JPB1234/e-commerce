@@ -3,7 +3,6 @@ import User from '#models/user';
 import { createUserValidator } from '#validators/user';
 import { updateUserValidator } from '#validators/updateUserValidator';
 import app from '@adonisjs/core/services/app' // Importa o Application Service para uso no caminho de upload
-import path from 'path';
 import { unlink } from 'node:fs/promises';
 
 export default class UsersController {

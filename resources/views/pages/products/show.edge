@@ -9,7 +9,7 @@
           :alt="product.name" 
           class="w-full h-64 object-cover transition-transform hover:scale-105 duration-300"
         >
-        <span class="absolute top-4 left-4 bg-blue-500 text-white text-sm px-3 py-1 rounded-full shadow-md" x-text="'Categoria: ' + product.category.name"></span>
+        <span class="absolute top-4 left-4 bg-indigo-500 text-white text-sm px-3 py-1 rounded-full shadow-md" x-text="'Categoria: ' + product.category.name"></span>
       </div>
 
       <!-- Informações do Produto -->
@@ -23,7 +23,7 @@
           @if(auth.user && auth.user.admin)
             <button 
               @click="isEditing = true"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+              class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors shadow-md"
             >
               Editar Produto
             </button>
@@ -70,7 +70,7 @@
                   </button>
                   <button 
                     @click="updateProduct()"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
                   >
                     Salvar
                   </button>
@@ -91,7 +91,7 @@
 
           <button 
             @click="addToCart()"
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors shadow-md"
           >
             Adicionar ao Carrinho
           </button>
