@@ -10,24 +10,30 @@
 @layouts.app()
 <body class="bg-gray-100">
     <main class="max-w-7xl mx-auto px-4 py-6">
-        
-        <section class="mb-8">
-            <div class="relative">
-                <button class="absolute right-2 top-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
-                    <a href="/products/create">
-                    +
-                    </a>
-                </button>
-            </div>
-        </section>
-
+        @if(auth.user && auth.user.admin)  
+            <section class="mb-8">
+                <div class="relative">
+                    <button class="absolute right-2 top-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                        <a href="/products/create">
+                        +
+                        </a>
+                    </button>
+                </div>
+            </section>
+        @endif
 
         <!-- Barra de Busca -->
         <section class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Encontre o que procura</h2>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Encontre o que procura</h2>
             <div class="relative">
-                <input type="text" placeholder="Buscar produtos..." class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                <button class="absolute right-2 top-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                <input 
+                    type="text" 
+                    placeholder="Buscar produtos..." 
+                    class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+                >
+                <button 
+                    class="absolute right-2 top-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-all shadow-md"
+                >
                     <span class="iconify" data-icon="mdi-magnify"></span>
                 </button>
             </div>
@@ -35,25 +41,31 @@
 
         <!-- Produtos -->
         <section class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Produtos</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Produtos</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 @each(product in products)
-                  <div class="w-full lg:w-1/3 px-3">
-                    <div class="product-card">
-                      <img src="{{ product.imageUrl || '/default-image.jpg' }}" alt="{{ product.name }}" class="product-image">
-                      <h3 class="product-name">{{ product.name }}</h3>
-                      <p class="product-price">${{ product.price.toFixed(2) }}</p>
-                      <p class="product-description">{{ product.description }}</p>
+                <a 
+                    href="{{ route('products.show', { id: product.id }) }}" 
+                    class="group block bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-1 transition-all"
+                >
+                    <!-- Imagem do Produto -->
+                    <div class="overflow-hidden rounded-t-lg">
+                        <img 
+                            src="{{ product.imageUrl || '/images/default-image.jpg' }}" 
+                            alt="{{ product.name }}" 
+                            class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        >
                     </div>
-                  </div>
+
+                    <!-- Informações do Produto -->
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 truncate">{{ product.name }}</h3>
+                        <p class="text-green-600 font-bold text-lg mt-2">${{ product.price.toFixed(2) }}</p>
+                        <p class="text-sm text-gray-600 mt-1 truncate">{{ product.description }}</p>
+                    </div>
+                </a>
                 @endeach
-
-                    
-               
             </div>
-        </section>
-
-       
         </section>
     </main>
 </body>
