@@ -1,3 +1,4 @@
+@layouts.app()
   <main class="container mx-auto py-6">
     <h1 class="text-xl font-bold mb-4">Adicionar Novo Produto</h1>
     @form({ action: route('products.store'), method: 'POST', enctype: 'multipart/form-data' })
@@ -60,3 +61,4 @@
       @end
     @end
   </main>
+@end

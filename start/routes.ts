@@ -9,6 +9,9 @@ const AuthController = () => import('#controllers/auth_controller')
 const CartController = () => import('#controllers/cart_controller')
 const AvatarsController = () => import('#controllers/avatars_controller')
 
+router.get('/products/create', [ProductsController, 'create']).as('products.create') // Criar produto
+
+
 // Rota inicial
 router.on('/').render('pages/home/show').as('home.show')
 
@@ -36,7 +39,7 @@ router
     router.get('/cart', [CartController, 'show']).as('cart.show') // Carrinho
     router.get('/profile/edit', [UsersController, 'edit']).as('users.edit') // Editar perfil
     router.post('/profile/edit', [UsersController, 'update']).as('users.update') // Atualizar perfil
-    router.get('/products', [ProductsController, 'index']).as('products.index') // Listar produtos
+    router.get('/products/index', [ProductsController, 'index']).as('products.index') // Listar produtos
     router.get('/products/:id', [ProductsController, 'show']).as('products.show') // Mostrar produto
     router.get('/logout', [AuthController, 'destroy']).as('auth.destroy')
   })
@@ -45,7 +48,6 @@ router
 // Rotas de admin para gerenciamento de produtos
 router
   .group(() => {
-    router.get('/products/create', [ProductsController, 'create']).as('products.create') // Criar produto
     router.post('/products', [ProductsController, 'store']).as('products.store') // Salvar novo produto
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy') // Excluir produto
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch') // Atualizar produto

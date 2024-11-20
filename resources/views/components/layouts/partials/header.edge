@@ -26,14 +26,14 @@
 
     <!-- Botões alinhados à direita com espaçamento adicional -->
     <div class="flex items-center space-x-5 md:space-x-8 ml-auto">
-      <!-- Botão Criar Produto (apenas admin) -->
+      <!-- Botão Listar Produtos (apenas admin) -->
       @if(auth.user && auth.user.admin)
       <div class="hidden md:block">
         <a
-          href="/products/create"
+          href="/products/index"
           class="px-4 py-2 text-sm text-gray-200 bg-[#4eb3c8] hover:bg-[#3b9eb1] rounded-lg transition duration-300 transform hover:scale-105 hover:opacity-90 focus:opacity-100"
         >
-          Criar Produto
+          Lista de Produtos
         </a>
       </div>
       @endif
