@@ -32,7 +32,12 @@
             aria-expanded="false"
           >
             <span class="sr-only">Open user menu</span>
-            <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="{{ auth.user.avatar_url }}" alt="user photo">
+            @if(auth.user.avatar_url)
+              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="{{ auth.user.avatar_url }}" alt="user photo">
+            @endif
+            @if(!auth.user.avatar_url)
+              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="public\images\user_icon.png" alt="user photo">
+            @endif
           </button>
 
           <!-- Dropdown menu -->
@@ -43,7 +48,12 @@
             class="absolute right-0 mt-2 w-48 bg-[#4eb3c8] divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 z-50"
           >
             <div class="px-4 py-3 flex items-center">
-              <img class="w-10 h-10 rounded-full mr-3" src="{{ auth.user.avatar_url }}" alt="User Avatar">
+               @if(auth.user.avatar_url)
+                <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="{{ auth.user.avatar_url }}" alt="user photo">
+              @endif
+              @if(!auth.user.avatar_url)
+                <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="public\images\user_icon.png" alt="user photo">
+              @endif
               <!-- Nome completo e email -->
               <div>
                 <span class="block text-sm font-medium text-gray-900 dark:text-white">
