@@ -6,13 +6,13 @@ export default class ProductsController {
   
   // Lista de produtos com paginação e filtro por nome
   async index({ request, view }: HttpContext) {
-    const categoryId = request.input('category');
+    const category_id = request.input('category');
 
     const query = Product.query().preload('category');
 
 
-    if (categoryId) {
-      query.where('categoryId', categoryId);
+    if (category_id) {
+      query.where('category_id', category_id);
     }
 
     const products = await query;
@@ -39,7 +39,7 @@ export default class ProductsController {
 
   // Criação de novo produto
   async store({ request, response }: HttpContext) {
-    const payload = request.only(['name', 'price', 'description', 'categoryId']) // Dados do formulário
+    const payload = request.only(['name', 'price', 'description', 'category_id']) // Dados do formulário
     
 
     const product = await Product.create(payload)
@@ -56,7 +56,7 @@ export default class ProductsController {
   async patch({ params, request }: HttpContext) {
     const product = await Product.findOrFail(params.id)
 
-    const payload = request.only(['name', 'price', 'description', 'categoryId'])
+    const payload = request.only(['name', 'price', 'description', 'category_id'])
     product.merge(payload) // Atualiza os dados do produto
 
     await product.save() // Salva as mudanças
