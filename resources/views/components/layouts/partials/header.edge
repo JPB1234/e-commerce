@@ -27,7 +27,7 @@
     <!-- Botões alinhados à direita com espaçamento adicional -->
     <div class="flex items-center space-x-5 md:space-x-8 ml-auto">
       <!-- Botão Listar Produtos (apenas admin) -->
-      @if(auth.user && auth.user.admin)
+      @if(auth.user)
       <div class="hidden md:block">
         <a
           href="/products/index"
