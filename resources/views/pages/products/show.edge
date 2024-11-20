@@ -17,9 +17,7 @@
         <h1 class="text-3xl font-bold text-gray-800" x-text="product.name"></h1>
         <p class="text-gray-500 leading-relaxed" x-text="product.description"></p>
         <div class="flex items-center justify-between">
-          <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price.toFixed(2)"></span>
-
-
+          <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price.toFixed(2)"></span>  
           @if(auth.user && auth.user.admin)
             <button 
               @click="isEditing = true"
@@ -61,6 +59,14 @@
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
                 </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Categoria</label>
+                  <input 
+                    type="text" 
+                    x-model="product.category.name" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  >
+                </div>
                 <div class="flex justify-end space-x-2">
                   <button 
                     @click="isEditing = false"
@@ -69,7 +75,7 @@
                     Cancelar
                   </button>
                   <button 
-                    @click="updateProduct()"
+                    @click="updateProductOnServer()"
                     class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                   >
                     Salvar
@@ -77,24 +83,13 @@
                 </div>
               </div>
             </div>
-          
-          
-          
-          
-          
-          
-          
 
-
-
-
-
-          <button 
-            @click="addToCart()"
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
-          >
-            Adicionar ao Carrinho
-          </button>
+            <button 
+              @click="addToCart()"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+            >
+              Adicionar ao Carrinho
+            </button>
         </div>
       </div>
     </div>
@@ -104,24 +99,50 @@
     document.addEventListener('alpine:init', () => {
       Alpine.data('productDetails', () => ({
         product: {
+          id: {{ product.id }},
           name: "{{ product.name }}",
           imagePath: "{{ product.imagePath }}",
           price: {{ product.price }},
           description: "{{ product.description }}",
           category: {
+            id: "{{ product.category.id }}",
             name: "{{ product.category.name }}",
           },
         },
         isEditing: false,
-        updateProduct() {
-          alert(`Produto atualizado: ${this.product.name} - ${this.product.price}`);
-          // Adicione lógica para salvar alterações no backend aqui
-          this.isEditing = false;
+        async updateProductOnServer() {
+          try {
+            const response = await fetch(`/products/${this.product.id}`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: this.product.name,
+                price: this.product.price,
+                description: this.product.description,
+                category_id: this.product.category.id,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Falha ao atualizar o produto');
+            }
+
+            const updatedProduct = await response.json();
+            this.product = updatedProduct; // Atualiza os dados localmente após salvar
+            alert('Produto atualizado com sucesso!');
+            this.isEditing = false;
+          } catch (error) {
+            console.error('Erro ao atualizar produto:', error);
+            alert('Ocorreu um erro ao tentar atualizar o produto.');
+          }
         },
         addToCart() {
           alert(`O produto "${this.product.name}" foi adicionado ao carrinho.`);
         }
       }));
     });
+
   </script>
-@end
+      @end
