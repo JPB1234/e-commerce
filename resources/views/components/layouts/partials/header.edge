@@ -1,86 +1,128 @@
 <nav class="bg-[#4B27A8] text-white py-1 px-3">
-<div class="container mx-auto max-w-full px-40 lg:px-50 flex items-center justify-between flex-wrap">
-
-    <!-- Logo -->
+  <div class="container mx-auto max-w-full px-4 lg:px-8 flex items-center justify-between flex-wrap">
+    <!-- Logo responsiva -->
     <div class="flex items-center flex-shrink-0">
       <a href="{{ route('home.show') }}" class="flex items-center">
-        <img src="/images/logo.png" alt="Logo" class="h-24 w-auto mr-4" />
+        <img src="/images/logo.png" alt="Logo" class="h-16 md:h-20 lg:h-24 w-auto max-w-full" />
       </a>
     </div>
 
-    <!-- Barra de pesquisa -->
-    <div class="flex-1 mx-4 hidden md:block">
-      <form action="/search" method="GET" class="relative">
+    <!-- Barra de pesquisa responsiva -->
+    <div class="flex-1 mx-4 hidden md:flex justify-center">
+      <form action="/search" method="GET" class="relative w-full min-w-[200px] max-w-[600px]">
         <input
           type="text"
           placeholder="Pesquisar..."
           class="w-full px-4 py-2 rounded-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-white"
         />
-        <button type="submit" class="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-[#4eb3c8] transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100">
+        <button
+          type="submit"
+          class="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-[#4eb3c8] transition-all duration-300 ease-in-out hover:scale-105 opacity-90 hover:opacity-100"
+        >
           <span class="iconify" data-icon="akar-icons:search" style="font-size: 24px;"></span>
         </button>
       </form>
     </div>
 
-    <!-- Ícones de usuário e carrinho -->
-    <div class="flex items-center space-x-6">
+    <!-- Botões alinhados à direita com espaçamento adicional -->
+    <div class="flex items-center space-x-5 md:space-x-8 ml-auto">
+      <!-- Botão Criar Produto (apenas admin) -->
+      @if(auth.user && auth.user.admin)
+      <div class="hidden md:block">
+        <a
+          href="/products/create"
+          class="px-4 py-2 text-sm text-gray-200 bg-[#4eb3c8] hover:bg-[#3b9eb1] rounded-lg transition duration-300 transform hover:scale-105 hover:opacity-90 focus:opacity-100"
+        >
+          Criar Produto
+        </a>
+      </div>
+      @endif
+
+      <!-- Carrinho -->
+      <a
+        href="/cart"
+        class="relative hover:text-[#4eb3c8] transition-all duration-300 transform hover:scale-105 opacity-90 hover:opacity-100"
+      >
+        <span class="iconify" data-icon="icon-park-outline:shopping-cart" style="font-size: 24px;"></span>
+        <span
+          class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+        >
+          0
+        </span>
+      </a>
+
       <!-- Usuário -->
       <div x-data="{ userDropdownOpen: false }" class="relative">
         @if(auth.isAuthenticated)
-          <button
-            @click="userDropdownOpen = !userDropdownOpen"
-            class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-            aria-expanded="false"
-          >
-            <span class="sr-only">Open user menu</span>
-           @if(auth.user.avatar_url)
-              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="{{ auth.user.avatar_url }}" alt="user photo">
-            @endif
-            @if(!auth.user.avatar_url)
-              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="public\images\user_icon.png" alt="user photo">
-            @endif
-          </button>
+        <!-- Botão com imagem do perfil -->
+        <button
+          @click="userDropdownOpen = !userDropdownOpen"
+          class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+          aria-expanded="false"
+        >
+          <img
+            class="w-8 h-8 rounded-full transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100 object-cover"
+            src="{{ auth.user.avatar_url || 'public/images/user_icon.png' }}"
+            alt="user photo"
+          />
+        </button>
 
-          <!-- Dropdown menu -->
-          <div
-            x-show="userDropdownOpen"
-            @click.outside="userDropdownOpen = false"
-            x-transition
-            class="absolute right-0 mt-2 w-48 bg-[#4eb3c8] divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 z-50"
-          >
-            <div class="px-4 py-3 flex items-center">
-              @if(auth.user.avatar_url)
-              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="{{ auth.user.avatar_url }}" alt="user photo">
-            @endif
-            @if(!auth.user.avatar_url)
-              <img class="w-8 h-8 rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100" src="public\images\user_icon.png" alt="user photo">
-            @endif
-              <!-- Nome completo e email -->
-              <div>
-                <span class="block text-sm font-medium text-gray-900 dark:text-white">
-                  {{ auth.user.full_name || 'Nome não disponível' }}
-                </span>
-                <span class="block text-xs italic text-[#4eb3c8]">
-                  {{ auth.user.email }}
-                </span>
-              </div>
+        <!-- Dropdown de usuário -->
+        <div
+          x-show="userDropdownOpen"
+          @click.outside="userDropdownOpen = false"
+          x-transition
+          class="absolute right-0 mt-2 w-auto min-w-[200px] max-w-[400px] bg-[#4eb3c8] divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 z-50"
+        >
+          <!-- Informação do usuário -->
+          <div class="px-4 py-3 flex items-center space-x-3">
+            <img
+              class="w-8 h-8 rounded-full transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100 object-cover"
+              src="{{ auth.user.avatar_url || 'public/images/user_icon.png' }}"
+              alt="user photo"
+            />
+            <div>
+              <p class="text-sm font-medium text-gray-900 dark:text-white">{{ auth.user.full_name || 'Nome não disponível' }}</p>
+              <p class="text-xs italic text-[#4eb3c8] break-words">{{ auth.user.email }}</p>
             </div>
-
-            <ul class="py-2">
-              <li>
-                <a href="/profile/edit" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Editar Perfil</a>
-              </li>
-              <li>
-                <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Configurações</a>
-              </li>
-              <li>
-                <a href="/help" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Ajuda e Suporte</a>
-              </li>
-              <li>
-                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Logout</a>
-              </li>
-            </ul>
           </div>
+
+          <!-- Opções do menu -->
+          <ul class="py-2">
+            <li>
+              <a
+                href="/profile/edit"
+                class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100"
+              >
+                Editar Perfil
+              </a>
+            </li>
+            <li>
+              <a
+                href="/settings"
+                class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100"
+              >
+                Configurações
+              </a>
+            </li>
+            <li>
+              <a
+                href="/help"
+                class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100"
+              >
+                Ajuda e Suporte
+              </a>
+            </li>
+            <li>
+              <a
+                href="/logout"
+                class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100"
+              >
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
         @else
           <!-- Menu dropdown para opções de login e criação de conta -->
           <button
@@ -99,29 +141,15 @@
           >
             <ul class="py-2">
               <li>
-                <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Login</a>
+                <a href="/login" class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100">Login</a>
               </li>
               <li>
-                <a href="/user" class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Criar Conta</a>
+                <a href="/user" class="block px-4 py-2 text-sm text-white hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100">Criar Conta</a>
               </li>
             </ul>
           </div>
         @endif
       </div>
-
-      @if(auth.user && auth.user.admin)
-      <div class="hidden md:block">
-          <a 
-              href="/products/create"
-              class="block px-4 py-2 text-sm text-gray-700 hover:text-[#4eb3c8] hover:bg-opacity-80 transition-all duration-300 ease-in-out transform hover:scale-105 dark:hover:text-[#4eb3c8] dark:text-gray-200 dark:hover:bg-opacity-80 dark:hover:scale-105">Criar Produto</a>
-      </div>
-      @endif
-
-      <!-- Carrinho -->
-      <a href="/cart" class="relative hover:text-[#4eb3c8] transition-all duration-300 ease-in-out transform hover:scale-105 opacity-90 hover:opacity-100">
-        <span class="iconify" data-icon="icon-park-outline:shopping-cart" style="font-size: 24px;"></span>
-        <span class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full text-xs w-5 h-4 flex items-center justify-center">0</span>
-      </a>
     </div>
   </div>
 </nav>

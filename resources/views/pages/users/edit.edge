@@ -1,101 +1,148 @@
-@layouts.app() 
-  <!DOCTYPE html>
-  <html lang="en">
-  
-  <body>
-  <div class="flex min-h-[80vh] flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div class="text-center sm:mx-auto sm:w-full sm:max-w-md">
+@layouts.app()
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+</head>
+<body>
+<div class="flex min-h-[80vh] flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="text-center sm:mx-auto sm:w-full sm:max-w-md">
         <h1 class="text-3xl font-bold text-gray-900">Editar Perfil</h1>
-      </div>
-      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white px-4 pb-4 pt-8 sm:rounded-lg sm:px-10 sm:pb-6">
-          <form 
-            id = "editForm"
-            action="{{ route('users.update') }}" 
-            enctype="multipart/form-data" 
-            method="POST" 
-            class="space-y-6"
-          >
-            <div>
-              @if(auth.user.avatar_url) 
-                <div class="relative">
-                  <img class="p-20" src="{{ auth.user.avatar_url }}" class="w-full" />
-                  <button 
-                    type="button" 
-                    class="absolute top-0 right-0 p-3 rounded-full"
-                    onclick="document.forms.editForm.avatar_url.value = ''; this.parentElement.remove();">
-                    &times;
-                  </button>
-                </div>
-                @endif
-              <input type="hidden" name="avatar_url" value="{{ auth.user.avatar_url || ''}}" />
-                @!input({
-                  type: 'file',
-                  label: 'Avatar',
-                  name: 'avatar'
-                })
-            </div>  
-            <div>
-              <label for="full_name" class="block text-sm font-medium text-gray-700" >Nome</label>
-              <div class="mt-1">
-                @!input({
-                  type: 'text',
-                  name: 'full_name',
-                  placeholder : auth.user.full_name
-                })
-              </div>
-            </div>
-            <div>
-              <label for="username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
-              <div class="mt-1">
-                @!input({
-                  type: 'text',
-                  name: 'username',
-                  placeholder : auth.user.username
-                })
-              </div>
-            </div>
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-              <div class="mt-1">
-                @!input({
-                  type: 'email',
-                  name: 'email',
-                  placeholder : auth.user.email
-                })
-              </div>
-            </div>
-            <div>
-              <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha</label>
-              <div class="mt-1">
-                @!input({
-                  type: 'password',
-                  name: 'password'
-                })
-              </div>
-            </div>
-            
-            <div>
-              <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirme a Senha nova</label>
-              <div class="mt-1">
-                @!input({
-                  type: 'password',
-                  name: 'password_confirm'
-                })
-              </div>
-            </div>
-            <div>
-              @button({
-                type: 'submit',
-                class: 'w-full',
-              })
-                Salvar Mudanças
-              @end
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </body>
-  </html>
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white px-4 pb-4 pt-8 sm:rounded-lg sm:px-10 sm:pb-6">
+            <form 
+                id="editForm"
+                action="{{ route('users.update') }}" 
+                enctype="multipart/form-data" 
+                method="POST" 
+                class="space-y-6"
+                x-data="{ previewUrl: '{{ auth.user.avatar_url || '' }}' }"
+            >
+                <!-- Campo de imagem -->
+                <div>
+                    <label for="avatar" class="block text-sm font-medium text-gray-700 mb-2">Foto de Perfil</label>
+                    <div class="relative flex flex-col items-center">
+                        <!-- Pré-visualização da imagem -->
+                        <template x-if="previewUrl">
+                            <div class="relative group">
+                                <img 
+                                    :src="previewUrl" 
+                                    alt="Pré-visualização" 
+                                    class="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-indigo-500 transform transition duration-300 group-hover:scale-105 cursor-pointer"
+                                    @click="$refs.avatarInput.click()"
+                                >
+                                <!-- Botão de remover imagem -->
+                                <button 
+                                    type="button" 
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-2 shadow-md transform scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out"
+                                    @click="previewUrl = ''; $refs.avatarInput.value = ''" 
+                                    title="Remover imagem"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                        </template>
+                        <!-- Caso não tenha imagem -->
+                        <div 
+                            x-show="!previewUrl" 
+                            class="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center shadow-inner text-gray-500 text-sm border-2 border-dashed border-gray-300 transform transition duration-300 hover:scale-105"
+                            @click="$refs.avatarInput.click()"
+                        >
+                            Sem imagem
+                        </div>
+                        <!-- Botão de seleção de imagem -->
+                        <label 
+                            for="avatar" 
+                            class="mt-4 inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md shadow-sm cursor-pointer transform transition duration-300 hover:scale-105 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                            Selecionar Imagem
+                        </label>
+                        <!-- Input de arquivo invisível -->
+                        <input 
+                            type="file" 
+                            name="avatar" 
+                            id="avatar" 
+                            x-ref="avatarInput"
+                            class="hidden"
+                            @change="event => {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    previewUrl = URL.createObjectURL(file);
+                                }
+                            }"
+                        >
+                        <!-- Mensagem de ajuda -->
+                        <p class="mt-2 text-sm text-gray-600 text-center">Formatos permitidos: JPG, PNG (máx. 2MB)</p>
+                    </div>
+                </div>
+                <!-- Outros campos do formulário -->
+                <div>
+                    <label for="full_name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <div class="mt-1">
+                        @!input({
+                            type: 'text',
+                            name: 'full_name',
+                            placeholder : auth.user.full_name
+                        })
+                    </div>
+                </div>
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Nome de usuário</label>
+                    <div class="mt-1">
+                        @!input({
+                            type: 'text',
+                            name: 'username',
+                            placeholder : auth.user.username
+                        })
+                    </div>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <div class="mt-1">
+                        @!input({
+                            type: 'email',
+                            name: 'email',
+                            placeholder : auth.user.email
+                        })
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Nova Senha</label>
+                    <div class="mt-1">
+                        @!input({
+                            type: 'password',
+                            name: 'password'
+                        })
+                    </div>
+                </div>
+                <div>
+                    <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirme a Senha nova</label>
+                    <div class="mt-1">
+                        @!input({
+                            type: 'password',
+                            name: 'password_confirm'
+                        })
+                    </div>
+                </div>
+                <div>
+                    @button({
+                        type: 'submit',
+                        class: 'w-full',
+                    })
+                        Salvar Mudanças
+                    @end
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 @end
+
+
+
+
