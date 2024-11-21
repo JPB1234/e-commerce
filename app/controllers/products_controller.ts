@@ -29,8 +29,9 @@ export default class ProductsController {
     try {
       const product = await Product.findOrFail(params.id);
       await product.load('category'); // Carrega a categoria associada
+      const categories = await Category.all();
 
-      return view.render('pages/products/show', { product });
+      return view.render('pages/products/show', { product, categories });
     } catch (error) {
       return view.render('pages/products/index', { error: 'Produto não encontrado' });
     }

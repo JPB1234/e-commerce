@@ -10,7 +10,11 @@
         alt="{{ product.name }}" 
         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
       >
-      <span class="absolute top-4 left-4 bg-blue-500 text-white text-sm px-3 py-1 rounded-full shadow-md" x-text="'Categoria: ' + product.category.name"></span>
+      <span 
+        class="absolute top-4 left-4 bg-blue-500 text-white text-lg px-4 py-2 rounded-full shadow-md font-semibold"
+        x-text="'Categoria: ' + product.category.name"
+      ></span>
+          
     </div>
 
     <!-- Informações do Produto -->
@@ -18,7 +22,8 @@
       <h1 class="text-3xl font-bold text-gray-800" x-text="product.name"></h1>
       <p class="text-gray-500 leading-relaxed" x-text="product.description"></p>
       <div class="flex items-center justify-between">
-        <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price.toFixed(2)"></span>  
+        <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price
+        "></span>  
 
         @if(auth.user && auth.user.admin)
           <button 
@@ -65,15 +70,31 @@
               >
             </div>
         
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Categoria</label>
-              <input 
-                type="text" 
-                x-model="product.category.name" 
-                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            <div class="mt-4">
+              <label for="category_id" class="block text-gray-700 font-medium mb-1">Categoria</label>
+              <select
+                x-model="product.category.id"
+                name="category_id"
+                id="category_id"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700 appearance-none"
               >
+                <option value="" disabled selected>Selecione uma Categoria</option>
+                @each(category in categories)
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                @endeach
+              </select>
+
+              <!-- Estilização do botão de seta -->
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
             </div>
-        
+
+
+
+            
             <!-- Campo de alteração da imagem -->
             <div>
               <label class="block text-sm font-medium text-gray-700">Imagem do Produto</label>
@@ -102,7 +123,6 @@
           </div>
         </div>
 
-
         <button 
           @click="addToCart()"
           class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
@@ -113,6 +133,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 <script>
   document.addEventListener('alpine:init', () => {
@@ -154,11 +177,9 @@
 
           const updatedProduct = await response.json();
           this.product = updatedProduct; // Atualiza os dados localmente após salvar
-          alert('Produto atualizado com sucesso!');
           this.isEditing = false;
         } catch (error) {
           console.error('Erro ao atualizar produto:', error);
-          alert('Ocorreu um erro ao tentar atualizar o produto.');
         }
       },
 
