@@ -8,27 +8,35 @@
       <img 
         :src="newImage ? URL.createObjectURL(newImage) : '{{ product.imageUrl || '/images/default-image.jpg' }}'" 
         alt="{{ product.name }}" 
-        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        class="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
       >
       <span 
         class="absolute top-4 left-4 bg-blue-500 text-white text-lg px-4 py-2 rounded-full shadow-md font-semibold"
         x-text="'Categoria: ' + product.category.name"
       ></span>
-          
+    </div>
+
+    <!-- Botão Voltar -->
+    <div class="p-4">
+      <a 
+        href="/products/index" 
+        class="inline-block bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+      >
+        ← Voltar para Produtos
+      </a>
     </div>
 
     <!-- Informações do Produto -->
     <div class="p-6 space-y-4">
-      <h1 class="text-3xl font-bold text-gray-800" x-text="product.name"></h1>
-      <p class="text-gray-500 leading-relaxed" x-text="product.description"></p>
+      <h1 class="text-4xl font-bold text-gray-800" x-text="product.name"></h1>
+      <p class="text-gray-600 leading-relaxed" x-text="product.description"></p>
       <div class="flex items-center justify-between">
-        <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price
-        "></span>  
+        <span class="text-3xl font-semibold text-green-600" x-text="'$' + product.price"></span>  
 
         @if(auth.user && auth.user.admin)
           <button 
             @click="isEditing = true"
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+            class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
           >
             Editar Produto
           </button>
@@ -83,18 +91,8 @@
                 <option value="{{ category.id }}">{{ category.name }}</option>
                 @endeach
               </select>
-
-              <!-- Estilização do botão de seta -->
-              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </div>
             </div>
 
-
-
-            
             <!-- Campo de alteração da imagem -->
             <div>
               <label class="block text-sm font-medium text-gray-700">Imagem do Produto</label>
@@ -125,7 +123,7 @@
 
         <button 
           @click="addToCart()"
-          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
         >
           Adicionar ao Carrinho
         </button>
@@ -133,9 +131,6 @@
     </div>
   </div>
 </div>
-
-
-
 
 <script>
   document.addEventListener('alpine:init', () => {

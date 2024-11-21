@@ -64,13 +64,13 @@
                         </div>
                     </a>
 
-                    <!-- Botão de Categoria - Fora do grid de produtos -->
+                    <!-- Botão de Categoria -->
                     <div class="mt-4 w-full text-center">
                         <a 
                             href="{{ route('categories.index') }}" 
                             class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all"
                         >
-                            Ver mais de {{ product.category.name }}
+                            {{ product.category.name }}
                         </a>
                     </div>
                 </div>
