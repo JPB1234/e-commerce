@@ -41,7 +41,7 @@ router
     router.post('/profile/edit', [UsersController, 'update']).as('users.update') // Atualizar perfil
     router.get('/products/index', [ProductsController, 'index']).as('products.index') // Listar produtos
     router.get('/products/:id', [ProductsController, 'show']).as('products.show') // Mostrar produto
-    router.get('/logout', [AuthController, 'destroy']).as('auth.destroy')
+    router.get('/logout', [AuthController, 'destroy']).as('auth.destroy') //Logout
   })
   .use(middleware.auth())
 
@@ -52,17 +52,17 @@ router
     router.delete('/products/:id', [ProductsController, 'destroy']).as('products.destroy') // Excluir produto
     router.patch('/products/:id', [ProductsController, 'patch']).as('products.patch') // Atualizar produto
   })
-  .use(middleware.admin()) // Certifique-se de que o middleware está correto
+  .use(middleware.admin()) 
 
 // Rotas de categorias
 router
   .group(() => {
-    router.get('/categories', [CategoryController, 'index']).as('categories.index')
-    router.get('/categories/create', [CategoryController, 'create']).as('categories.create')
-    router.post('/categories', [CategoryController, 'store']).as('categories.store')
+    router.get('/categories', [CategoryController, 'index']).as('categories.index')//Lista de categorias
+    router.get('/categories/create', [CategoryController, 'create']).as('categories.create') //Criar categoria
+    router.post('/categories', [CategoryController, 'store']).as('categories.store') //Guardar categoria
     router.get('/categories/:id', [CategoryController, 'show']).as('categories.show') // Exibir categoria
   })
-  .use(middleware.admin()) // Protegendo o grupo com o middleware de admin
+  .use(middleware.admin()) 
   
 // Rotas de ajuda
 router

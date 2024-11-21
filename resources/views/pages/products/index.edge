@@ -10,15 +10,23 @@
 @layouts.app()
 <body class="bg-gray-100">
     <main class="max-w-7xl mx-auto px-4 py-6">
-        @if(auth.user && auth.user.admin)  
+         @if(auth.user && auth.user.admin)
             <section class="mb-8">
-                <div class="relative">
-                    <button class="absolute right-2 top-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
-                        <a href="/products/create">+</a>
+                <div class="flex justify-end space-x-4">
+                    <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                        <a href="/categories/create">
+                            Criar Categoria
+                        </a>
+                    </button>
+                    <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                        <a href="/products/create">
+                            Criar Produto
+                        </a>
                     </button>
                 </div>
             </section>
         @endif
+
 
         <!-- Barra de Busca -->
         <section class="mb-8">
@@ -64,13 +72,13 @@
                         </div>
                     </a>
 
-                    <!-- Botão de Categoria -->
+                    <!-- Botão de Categoria - Fora do grid de produtos -->
                     <div class="mt-4 w-full text-center">
                         <a 
                             href="{{ route('categories.index') }}" 
                             class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all"
                         >
-                            {{ product.category.name }}
+                            Ver mais de {{ product.category.name }}
                         </a>
                     </div>
                 </div>

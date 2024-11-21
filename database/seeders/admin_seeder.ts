@@ -1,6 +1,5 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import User from '#models/user'
-import Hash from '@adonisjs/core/services/hash'
 
 
 export default class CategorySeeder extends BaseSeeder {

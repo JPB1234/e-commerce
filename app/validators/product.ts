@@ -7,8 +7,8 @@ export const createProductValidator = vine.compile(
     description: vine.string().trim(),
     category_id: vine.number(),
     image: vine.file({
-      size: '2mb', // Limite de 2MB
-      extnames: ['jpg', 'jpeg', 'png'], // Extensões permitidas
+      size: '2mb', 
+      extnames: ['jpg', 'jpeg', 'png'], 
     }),
   })
 )

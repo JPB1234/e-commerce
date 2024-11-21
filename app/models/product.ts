@@ -23,7 +23,7 @@ export default class Product extends BaseModel {
   declare description: string
 
   @column()
-  declare imageUrl: string | null // Adicionando o campo imageUrl
+  declare imageUrl: string | null 
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

@@ -28,7 +28,7 @@ export default class ProductsController {
   async show({ view, params }: HttpContext) {
     try {
       const product = await Product.findOrFail(params.id);
-      await product.load('category'); // Carrega a categoria associada
+      await product.load('category');
       const categories = await Category.all();
 
       return view.render('pages/products/show', { product, categories });
@@ -42,22 +42,20 @@ export default class ProductsController {
     const payload = request.only(['name', 'price', 'description', 'category_id']); // Dados do formulário
     let imageUrl = null;
 
-    // Lida com o upload da imagem
     const image = request.file('image', {
       size: '2mb',
       extnames: ['jpg', 'jpeg', 'png'],
     });
 
     if (image) {
-      const fileName = `${cuid()}.${image.extname}`; // Nome único para o arquivo
+      const fileName = `${cuid()}.${image.extname}`; 
       await image.move(app.makePath('public', 'images'), {
         name: fileName,
         overwrite: true,
       });
-      imageUrl = `/images/${fileName}`; // Caminho público da imagem
+      imageUrl = `/images/${fileName}`; 
     }
 
-    // Cria o produto
     const product = await Product.create({ ...payload, imageUrl });
     return response.redirect().toRoute('products.show', { id: product.id });
   }
@@ -72,9 +70,8 @@ export default class ProductsController {
   async patch({ params, request }: HttpContext) {
     const product = await Product.findOrFail(params.id);
     const payload = request.only(['name', 'price', 'description', 'category_id']);
-    let imageUrl = product.imageUrl; // Manter a imagem existente por padrão
+    let imageUrl = product.imageUrl; 
 
-    // Lida com o upload de uma nova imagem, se houver
     const image = request.file('image', {
       size: '2mb',
       extnames: ['jpg', 'jpeg', 'png'],
@@ -89,11 +86,10 @@ export default class ProductsController {
       imageUrl = `/images/${fileName}`;
     }
 
-    // Atualiza os dados do produto
     product.merge({ ...payload, imageUrl });
     await product.save();
 
-    return product; // Retorna o produto atualizado
+    return product; 
   }
 
   // Exclui o produto

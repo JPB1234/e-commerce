@@ -7,7 +7,7 @@ export const updateUserValidator = vine.compile(
     avatar: vine.file({extnames: ['jpg', 'png', 'jpeg'], size: '5mb'}).optional(),
     avatar_url: vine.string().optional(), 
     email: vine.string().email().trim().optional(),
-    password: vine.string().minLength(3).confirmed({ confirmationField: 'password_confirm' }).optional(), // Define o campo de confirmação explicitamente
+    password: vine.string().minLength(3).confirmed({ confirmationField: 'password_confirm' }).optional(),
   })
 );
 
