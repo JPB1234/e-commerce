@@ -96,8 +96,8 @@ export default class ProductsController {
   async destroy({ params }: HttpContext) {
     const product = await Product.findOrFail(params.id);
 
-    await product.delete(); // Exclui o produto
+    await product.delete(); 
 
-    return { success: `${params.id} removido` }; // Retorna mensagem de sucesso
+    return { success: `${params.id} removido` }; 
   }
 }
