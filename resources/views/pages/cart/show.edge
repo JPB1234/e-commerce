@@ -19,13 +19,12 @@
           @each(product in cart)
             <tr class="border-b">
               <td class="px-4 py-3 text-sm text-gray-800">
-                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-16 h-16 object-cover mr-4">
+                <img src="{{ product.imageUrl }}" alt="{{ product.name }}" class="w-16 h-16 object-cover mr-4">
                 {{ product.name }}
               </td>
               <td class="px-4 py-3 text-sm text-gray-800">R$ {{ Number(product.price).toFixed(2) }}</td>
               <td class="px-4 py-3 text-sm text-gray-800">
                 <form method="POST" action="{{ route('cart.update', { id: product.product_id }) }}">
-                  @method('PUT')
                   <input type="number" name="quantity" value="{{ product.quantity }}" class="w-16 p-2 border border-gray-300 rounded-md text-center" min="1">
                   <button type="submit" class="text-blue-500 hover:text-blue-700 ml-2">Atualizar</button>
                 </form>
@@ -54,20 +53,3 @@
 @end
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  const deleteForms = document.querySelectorAll('.delete-form');
-
-  deleteForms.forEach(form => {
-    form.addEventListener('submit', (event) => {
-      // Verifica se é um formulário de delete
-      if (form.dataset.method === 'DELETE') {
-        // Criar o campo _method
-        const methodInput = document.createElement('input');
-        methodInput.setAttribute('type', 'hidden');
-        methodInput.setAttribute('name', '_method');
-        methodInput.setAttribute('value', 'DELETE');
-        form.appendChild(methodInput);
-      }
-    });
-  });
-});

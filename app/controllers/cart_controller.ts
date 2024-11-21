@@ -9,24 +9,24 @@ export default class CartController {
     return view.render('pages/cart/show', { cart })
   }
 
-  // Adiciona produto ao carrinho
   public async store({ request, session, response }: HttpContext) {
     const productId = request.input('product_id')
-    const quantity = request.input('quantity')
-
+    const quantity = Number(request.input('quantity')) // Converte a quantidade para número
+  
     // Recupera os detalhes do produto do banco de dados
     const product = await Product.find(productId)
-
+  
     // Verifica se o produto existe
     if (product) {
       let cart = session.get('cart', [])
-
+  
       // Verifica se o produto já está no carrinho
       const existingProduct = cart.find((item: any) => item.product_id === product.id)
       
       if (existingProduct) {
         // Se o produto já estiver no carrinho, soma a quantidade
         existingProduct.quantity += quantity
+        existingProduct.total = existingProduct.quantity * product.price // Atualiza o total
       } else {
         // Caso contrário, adiciona o novo produto ao carrinho
         cart.push({
@@ -34,17 +34,17 @@ export default class CartController {
           name: product.name,
           price: product.price,
           quantity: quantity,
-          total: Number(product.price) * quantity, // Garante que price seja tratado como número
+          total: product.price * quantity, // Garante que price seja tratado como número
         })
       }
-
+  
       // Atualiza o carrinho na sessão
       session.put('cart', cart)
     }
-
-    // Redireciona para o carrinho
+  
     return response.redirect().toRoute('cart.show')
   }
+ 
 
   // Atualiza a quantidade de um item no carrinho
   public async update({ params, request, session, response }: HttpContext) {
@@ -69,6 +69,7 @@ export default class CartController {
     // Redireciona para a página do carrinho
     return response.redirect().toRoute('cart.show')
   }
+
 
   public async destroy({ params, session, response }: HttpContext) {
     const productId = parseInt(params.id);
