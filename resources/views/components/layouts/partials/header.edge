@@ -62,11 +62,11 @@
         >
           <img
             class="w-8 h-8 rounded-full transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100 object-cover"
-            src="{{ auth.user.avatar_url || 'public/images/user_icon.png' }}"
+            src="{{ auth.user.avatar_url || '/images/user_icon.png' }}"
             alt="user photo"
           />
         </button>
-
+        
         <!-- Dropdown de usuário -->
         <div
           x-show="userDropdownOpen"
@@ -78,7 +78,7 @@
           <div class="px-4 py-3 flex items-center space-x-3">
             <img
               class="w-8 h-8 rounded-full transition duration-300 transform hover:scale-105 opacity-90 hover:opacity-100 object-cover"
-              src="{{ auth.user.avatar_url || 'public/images/user_icon.png' }}"
+              src="{{ auth.user.avatar_url || '/images/user_icon.png' }}"
               alt="user photo"
             />
             <div>
@@ -86,7 +86,7 @@
               <p class="text-xs italic text-[#4eb3c8] break-words">{{ auth.user.email }}</p>
             </div>
           </div>
-
+        
           <!-- Opções do menu -->
           <ul class="py-2">
             <li>
@@ -123,6 +123,7 @@
             </li>
           </ul>
         </div>
+
         @else
           <!-- Menu dropdown para opções de login e criação de conta -->
           <button
