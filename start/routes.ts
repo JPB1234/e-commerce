@@ -36,7 +36,8 @@ router
 router
   .group(() => {
     router.get('/products/create', [ProductsController, 'create']).as('products.create') // Criar produto
-    router.get('/cart', [CartController,'show']) // Mostrar o carrinho
+
+    router.get('/cart', [CartController,'show']).as('cart.show') // Mostrar o carrinho
     router.post('/cart', [CartController,'store']).as('cart.store') // Adicionar item ao carrinho
     router.put('/cart/:id', [CartController,'update']).as('cart.update') // Atualizar item do carrinho
     router.delete('/cart/:id', [CartController,'destroy']).as('cart.destroy') // Remover item do carrinho
