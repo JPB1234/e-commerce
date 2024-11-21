@@ -1,148 +1,196 @@
 @layouts.app()
-  <div x-data="productDetails" class="container mx-auto py-8 px-4">
-    <!-- Card Principal -->
-    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      <!-- Imagem do Produto -->
-      <div class="relative bg-gray-200">
-        <img 
-          :src="product.imagePath ? '/' + product.imagePath : '/default-image.jpg'" 
-          :alt="product.name" 
-          class="w-full h-64 object-cover transition-transform hover:scale-105 duration-300"
+<div x-data="productDetails" class="container mx-auto py-8 px-4">
+  <!-- Card Principal -->
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <!-- Imagem do Produto -->
+    <div class="relative bg-gray-200">
+      <!-- Exibição da Imagem -->
+      <img 
+        :src="newImage ? URL.createObjectURL(newImage) : '{{ product.imageUrl || '/images/default-image.jpg' }}'" 
+        alt="{{ product.name }}" 
+        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+      >
+      <span 
+        class="absolute top-4 left-4 bg-blue-500 text-white text-lg px-4 py-2 rounded-full shadow-md font-semibold"
+        x-text="'Categoria: ' + product.category.name"
+      ></span>
+          
+    </div>
+
+    <!-- Informações do Produto -->
+    <div class="p-6 space-y-4">
+      <h1 class="text-3xl font-bold text-gray-800" x-text="product.name"></h1>
+      <p class="text-gray-500 leading-relaxed" x-text="product.description"></p>
+      <div class="flex items-center justify-between">
+        <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price
+        "></span>  
+
+        @if(auth.user && auth.user.admin)
+          <button 
+            @click="isEditing = true"
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+          >
+            Editar Produto
+          </button>
+        @endif
+
+        <!-- Modal de Edição -->
+        <div 
+          x-show="isEditing"
+          class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+          style="display: none;"
         >
-        <span class="absolute top-4 left-4 bg-blue-500 text-white text-sm px-3 py-1 rounded-full shadow-md" x-text="'Categoria: ' + product.category.name"></span>
-      </div>
+          <div class="bg-white p-6 rounded-lg shadow-lg space-y-4 max-w-sm w-full">
+            <h2 class="text-2xl font-bold text-gray-800">Editar Produto</h2>
+        
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Nome</label>
+              <input 
+                type="text" 
+                x-model="product.name" 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+        
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Descrição</label>
+              <textarea 
+                x-model="product.description" 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              ></textarea>
+            </div>
+        
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Preço</label>
+              <input 
+                type="number" 
+                x-model="product.price" 
+                step="0.01" 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
+        
+            <div class="mt-4">
+              <label for="category_id" class="block text-gray-700 font-medium mb-1">Categoria</label>
+              <select
+                x-model="product.category.id"
+                name="category_id"
+                id="category_id"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700 appearance-none"
+              >
+                <option value="" disabled selected>Selecione uma Categoria</option>
+                @each(category in categories)
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                @endeach
+              </select>
 
-      <!-- Informações do Produto -->
-      <div class="p-6 space-y-4">
-        <h1 class="text-3xl font-bold text-gray-800" x-text="product.name"></h1>
-        <p class="text-gray-500 leading-relaxed" x-text="product.description"></p>
-        <div class="flex items-center justify-between">
-          <span class="text-xl font-semibold text-green-600" x-text="'$' + product.price.toFixed(2)"></span>  
-          @if(auth.user && auth.user.admin)
-            <button 
-              @click="isEditing = true"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
-            >
-              Editar Produto
-            </button>
-            @endif
-
-            <!-- Modal de Edição -->
-            <div 
-              x-show="isEditing"
-              class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
-              style="display: none;"
-            >
-              <div class="bg-white p-6 rounded-lg shadow-lg space-y-4 max-w-sm w-full">
-                <h2 class="text-2xl font-bold text-gray-800">Editar Produto</h2>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Nome</label>
-                  <input 
-                    type="text" 
-                    x-model="product.name" 
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Descrição</label>
-                  <textarea 
-                    x-model="product.description" 
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  ></textarea>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Preço</label>
-                  <input 
-                    type="number" 
-                    x-model="product.price" 
-                    step="0.01" 
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Categoria</label>
-                  <input 
-                    type="text" 
-                    x-model="product.category.name" 
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                </div>
-                <div class="flex justify-end space-x-2">
-                  <button 
-                    @click="isEditing = false"
-                    class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button 
-                    @click="updateProductOnServer()"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                  >
-                    Salvar
-                  </button>
-                </div>
+              <!-- Estilização do botão de seta -->
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
               </div>
             </div>
 
-            <button 
-              @click="addToCart()"
-              class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
-            >
-              Adicionar ao Carrinho
-            </button>
+
+
+            
+            <!-- Campo de alteração da imagem -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Imagem do Produto</label>
+              <input 
+                type="file" 
+                @change="handleImageChange($event)"
+                class="mt-1 block w-full text-gray-700 file:border file:bg-gray-200 file:py-2 file:px-4 file:rounded-lg"
+              >
+              <p class="text-sm text-gray-500 mt-2">Escolha uma nova imagem para o produto (opcional).</p>
+            </div>
+        
+            <div class="flex justify-end space-x-2">
+              <button 
+                @click="isEditing = false"
+                class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button 
+                @click="updateProductOnServer()"
+                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
         </div>
+
+        <button 
+          @click="addToCart()"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('productDetails', () => ({
-        product: {
-          id: {{ product.id }},
-          name: "{{ product.name }}",
-          imagePath: "{{ product.imagePath }}",
-          price: {{ product.price }},
-          description: "{{ product.description }}",
-          category: {
-            id: "{{ product.category.id }}",
-            name: "{{ product.category.name }}",
-          },
+
+
+
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('productDetails', () => ({
+      product: {
+        id: {{ product.id }},
+        name: "{{ product.name }}",
+        price: {{ product.price }},
+        description: "{{ product.description }}",
+        category: {
+          id: "{{ product.category.id }}",
+          name: "{{ product.category.name }}",
         },
-        isEditing: false,
-        async updateProductOnServer() {
-          try {
-            const response = await fetch(`/products/${this.product.id}`, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                name: this.product.name,
-                price: this.product.price,
-                description: this.product.description,
-                category_id: this.product.category.id,
-              }),
-            });
+      },
+      isEditing: false,
+      newImage: null,
 
-            if (!response.ok) {
-              throw new Error('Falha ao atualizar o produto');
-            }
+      // Função de atualização do produto no servidor
+      async updateProductOnServer() {
+        const formData = new FormData();
+        formData.append('name', this.product.name);
+        formData.append('price', this.product.price);
+        formData.append('description', this.product.description);
+        formData.append('category_id', this.product.category.id);
 
-            const updatedProduct = await response.json();
-            this.product = updatedProduct; // Atualiza os dados localmente após salvar
-            alert('Produto atualizado com sucesso!');
-            this.isEditing = false;
-          } catch (error) {
-            console.error('Erro ao atualizar produto:', error);
-            alert('Ocorreu um erro ao tentar atualizar o produto.');
-          }
-        },
-        addToCart() {
-          alert(`O produto "${this.product.name}" foi adicionado ao carrinho.`);
+        if (this.newImage) {
+          formData.append('image', this.newImage);
         }
-      }));
-    });
 
-  </script>
-      @end
+        try {
+          const response = await fetch(`/products/${this.product.id}`, {
+            method: 'PATCH',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error('Falha ao atualizar o produto');
+          }
+
+          const updatedProduct = await response.json();
+          this.product = updatedProduct; // Atualiza os dados localmente após salvar
+          this.isEditing = false;
+        } catch (error) {
+          console.error('Erro ao atualizar produto:', error);
+        }
+      },
+
+      // Função para tratar a nova imagem
+      handleImageChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+          this.newImage = file;
+        }
+      }
+    }));
+  });
+</script>
+@end
