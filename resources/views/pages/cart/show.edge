@@ -1,3 +1,50 @@
-@layouts.app() 
-  
+@layouts.app()
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Seu Carrinho</h1>
+
+  @if(cart.length > 0)
+    <table class="table-auto w-full mb-6">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-4 py-2">Produto</th>
+          <th class="px-4 py-2">Preço</th>
+          <th class="px-4 py-2">Quantidade</th>
+          <th class="px-4 py-2">Total</th>
+          <th class="px-4 py-2">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(item in cart)
+          <tr>
+            <td class="border px-4 py-2">{{ item.name }}</td>
+            <td class="border px-4 py-2">R$ {{ item.price.toFixed(2) }}</td>
+            <td class="border px-4 py-2">
+              <form method="POST" action="{{ route('cart.update', { id: item.product_id }) }}">
+                @csrf
+                @method('PUT')
+                <input type="number" name="quantity" value="{{ item.quantity }}" class="w-16 border">
+                <button type="submit" class="text-blue-500">Atualizar</button>
+              </form>
+            </td>
+            <td class="border px-4 py-2">R$ {{ item.total.toFixed(2) }}</td>
+            <td class="border px-4 py-2">
+              <form method="POST" action="{{ route('cart.destroy', { id: item.product_id }) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-red-500">Remover</button>
+              </form>
+            </td>
+          </tr>
+        @endeach
+      </tbody>
+    </table>
+
+    <div class="text-right">
+      <p class="text-lg font-bold">Total: R$ {{ cart.reduce((sum, item) => sum + item.total, 0).toFixed(2) }}</p>
+      <a href="/checkout" class="mt-4 inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Finalizar Compra</a>
+    </div>
+  @else
+    <p>Seu carrinho está vazio.</p>
+  @endif
+</div>
 @end
