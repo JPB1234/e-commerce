@@ -121,12 +121,14 @@
           </div>
         </div>
 
-        <button 
-          @click="addToCart()"
-          class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors shadow-md"
-        >
-          Adicionar ao Carrinho
-        </button>
+        <!-- Formulário de Adicionar ao Carrinho -->
+        <form method="POST" action="{{ route('cart.store') }}">
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <input type="number" name="quantity" value="1" class="w-16 border p-2">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all">
+            Adicionar ao Carrinho
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -147,6 +149,13 @@
       },
       isEditing: false,
       newImage: null,
+
+      // Função para adicionar o produto ao carrinho
+      async addToCart() {
+        // Envia o formulário com os dados do produto
+        const form = document.querySelector('form');
+        form.submit();
+      },
 
       // Função de atualização do produto no servidor
       async updateProductOnServer() {

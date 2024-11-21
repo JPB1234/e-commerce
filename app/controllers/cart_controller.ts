@@ -1,102 +1,84 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import Product from "#models/product"
+import Product from '#models/product'
 
 export default class CartController {
 
-    // Exibe os itens do carrinho
-    public async show({ session, view }: HttpContext) {
-      const cart = session.get('cart', []);
-  
-      // Carrega os produtos do banco de dados
-      const productIds = cart.map((item: any) => item.product_id);
-      const products = await Product.query().whereIn('id', productIds);
-  
-      // Mapear produtos com as quantidades e totais armazenados na sessão
-      const cartDetails = cart.map((item: any) => {
-        const product = products.find((p) => p.id === item.product_id);
-        return {
-          ...item,
-          name: product?.name || 'Produto não encontrado',
-          price: product?.price || 0,
-          total: (product?.price || 0) * item.quantity,
-        };
-      });
-  
-      return view.render('pages/cart/show', { cart: cartDetails });
-    }
-
-
-  // Exibe os itens do carrinho
-  public async index({ session, view }: HttpContext) {
-    const cart = session.get('cart', []);
-
-    // Carrega os produtos do banco de dados
-    const productIds = cart.map((item: any) => item.product_id);
-    const products = await Product.query().whereIn('id', productIds);
-
-    // Mapear produtos com as quantidades e totais armazenados na sessão
-    const cartDetails = cart.map((item: any) => {
-      const product = products.find((p) => p.id === item.product_id);
-      return {
-        ...item,
-        name: product?.name || 'Produto não encontrado',
-        price: product?.price || 0,
-        total: (product?.price || 0) * item.quantity,
-      };
-    });
-
-    return view.render('pages/cart/show', { cart: cartDetails });
+  // Exibe o carrinho
+  public async show({ session, view }: HttpContext) {
+    const cart = session.get('cart', [])
+    return view.render('pages/cart/show', { cart })
   }
 
-  // Adiciona um produto ao carrinho
+  // Adiciona produto ao carrinho
   public async store({ request, session, response }: HttpContext) {
-    const { product_id, quantity } = request.only(['product_id', 'quantity']);
+    const productId = request.input('product_id')
+    const quantity = request.input('quantity')
+
+    // Recupera os detalhes do produto do banco de dados
+    const product = await Product.find(productId)
 
     // Verifica se o produto existe
-    const product = await Product.find(product_id);
-    if (!product) {
-      return response.redirect().back().with('error', 'Produto não encontrado.');
+    if (product) {
+      let cart = session.get('cart', [])
+
+      // Verifica se o produto já está no carrinho
+      const existingProduct = cart.find((item: any) => item.product_id === product.id)
+      
+      if (existingProduct) {
+        // Se o produto já estiver no carrinho, soma a quantidade
+        existingProduct.quantity += quantity
+      } else {
+        // Caso contrário, adiciona o novo produto ao carrinho
+        cart.push({
+          product_id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: quantity,
+          total: Number(product.price) * quantity, // Garante que price seja tratado como número
+        })
+      }
+
+      // Atualiza o carrinho na sessão
+      session.put('cart', cart)
     }
 
-    let cart = session.get('cart', []);
-
-    // Verifica se o produto já está no carrinho
-    const existingItem = cart.find((item: any) => item.product_id === product_id);
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.push({ product_id, quantity });
-    }
-
-    session.put('cart', cart);
-    return response.redirect().toRoute('cart.index');
+    // Redireciona para o carrinho
+    return response.redirect().toRoute('cart.show')
   }
 
   // Atualiza a quantidade de um item no carrinho
   public async update({ params, request, session, response }: HttpContext) {
-    const { quantity } = request.only(['quantity']);
-    const product_id = parseInt(params.id);
+    const productId = parseInt(params.id)
+    const quantity = request.input('quantity')
 
-    let cart = session.get('cart', []);
+    // Recupera o carrinho da sessão
+    let cart = session.get('cart', [])
 
-    // Atualiza a quantidade do produto no carrinho
-    const item = cart.find((item: any) => item.product_id === product_id);
-    if (item) {
-      item.quantity = quantity;
+    // Encontra o produto no carrinho
+    const product = cart.find((item: any) => item.product_id === productId)
+
+    if (product) {
+      // Atualiza a quantidade do produto no carrinho
+      product.quantity = quantity
+      product.total = Number(product.price) * quantity  // Garante que price seja tratado como número
+
+      // Atualiza o carrinho na sessão
+      session.put('cart', cart)
     }
 
-    session.put('cart', cart);
-    return response.redirect().toRoute('cart.index');
+    // Redireciona para a página do carrinho
+    return response.redirect().toRoute('cart.show')
   }
 
-  // Remove um item do carrinho
   public async destroy({ params, session, response }: HttpContext) {
-    const product_id = parseInt(params.id);
+    const productId = parseInt(params.id);
+  
     let cart = session.get('cart', []);
-
-    cart = cart.filter((item: any) => item.product_id !== product_id);
-
+  
+    // Filtra o carrinho para remover o item com o id fornecido
+    cart = cart.filter((item: any) => item.product_id !== productId);
+  
+    // Atualiza o carrinho na sessão
     session.put('cart', cart);
-    return response.redirect().toRoute('cart.index');
-  }
-}
+  
+    return response.redirect().toRoute('cart.show')}}

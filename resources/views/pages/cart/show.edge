@@ -1,50 +1,73 @@
 @layouts.app()
+
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-6">Seu Carrinho</h1>
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Seu Carrinho</h1>
 
   @if(cart.length > 0)
-    <table class="table-auto w-full mb-6">
-      <thead>
-        <tr class="bg-gray-200">
-          <th class="px-4 py-2">Produto</th>
-          <th class="px-4 py-2">Preço</th>
-          <th class="px-4 py-2">Quantidade</th>
-          <th class="px-4 py-2">Total</th>
-          <th class="px-4 py-2">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        @each(item in cart)
-          <tr>
-            <td class="border px-4 py-2">{{ item.name }}</td>
-            <td class="border px-4 py-2">R$ {{ item.price.toFixed(2) }}</td>
-            <td class="border px-4 py-2">
-              <form method="POST" action="{{ route('cart.update', { id: item.product_id }) }}">
-                @csrf
-                @method('PUT')
-                <input type="number" name="quantity" value="{{ item.quantity }}" class="w-16 border">
-                <button type="submit" class="text-blue-500">Atualizar</button>
-              </form>
-            </td>
-            <td class="border px-4 py-2">R$ {{ item.total.toFixed(2) }}</td>
-            <td class="border px-4 py-2">
-              <form method="POST" action="{{ route('cart.destroy', { id: item.product_id }) }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="text-red-500">Remover</button>
-              </form>
-            </td>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <table class="min-w-full table-auto mb-6">
+        <thead>
+          <tr class="bg-gray-100 text-left">
+            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Produto</th>
+            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Preço</th>
+            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Quantidade</th>
+            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Total</th>
+            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Ações</th>
           </tr>
-        @endeach
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @each(product in cart)
+            <tr class="border-b">
+              <td class="px-4 py-3 text-sm text-gray-800">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-16 h-16 object-cover mr-4">
+                {{ product.name }}
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-800">R$ {{ Number(product.price).toFixed(2) }}</td>
+              <td class="px-4 py-3 text-sm text-gray-800">
+                <form method="POST" action="{{ route('cart.update', { id: product.product_id }) }}">
+                  @method('PUT')
+                  <input type="number" name="quantity" value="{{ product.quantity }}" class="w-16 p-2 border border-gray-300 rounded-md text-center" min="1">
+                  <button type="submit" class="text-blue-500 hover:text-blue-700 ml-2">Atualizar</button>
+                </form>
+              </td>
+            <td class="px-4 py-3 text-sm text-gray-800">R$ {{ product.price ? Number(product.price).toFixed(2) : '0.00' }}</td>
+              <td class="px-4 py-3 text-sm text-gray-800">
+              <form method="POST" action="{{ route('cart.destroy', { id: product.product_id }) }}">
+                <input type="hidden" name="_method" value="DELETE"> 
+                <button type="submit" class="text-red-500 hover:text-red-700">Remover</button>
+              </form>
+              </td>
+            </tr>
+          @endeach
+        </tbody>
+      </table>
 
-    <div class="text-right">
-      <p class="text-lg font-bold">Total: R$ {{ cart.reduce((sum, item) => sum + item.total, 0).toFixed(2) }}</p>
-      <a href="/checkout" class="mt-4 inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">Finalizar Compra</a>
+      <div class="text-right">
+        <p class="text-lg font-semibold text-gray-800">Total: R$ {{ cart.reduce((sum, product) => sum + product.total, 0).toFixed(2) }}</p>
+        <a href="/checkout" class="mt-4 inline-block bg-green-500 text-white px-6 py-3 rounded-md shadow-lg hover:bg-green-600 transition-all">Finalizar Compra</a>
+      </div>
     </div>
   @else
-    <p>Seu carrinho está vazio.</p>
+    <p class="text-gray-600">Seu carrinho está vazio.</p>
   @endif
 </div>
 @end
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const deleteForms = document.querySelectorAll('.delete-form');
+
+  deleteForms.forEach(form => {
+    form.addEventListener('submit', (event) => {
+      // Verifica se é um formulário de delete
+      if (form.dataset.method === 'DELETE') {
+        // Criar o campo _method
+        const methodInput = document.createElement('input');
+        methodInput.setAttribute('type', 'hidden');
+        methodInput.setAttribute('name', '_method');
+        methodInput.setAttribute('value', 'DELETE');
+        form.appendChild(methodInput);
+      }
+    });
+  });
+});
