@@ -36,7 +36,11 @@ router
 // Rotas protegidas (usuário autenticado)
 router
   .group(() => {
-    router.get('/cart', [CartController, 'show']).as('cart.show') // Carrinho
+    router.get('/cart', [CartController,'show']) // Mostrar o carrinho
+    router.post('/cart', [CartController,'store']).as('cart.store') // Adicionar item ao carrinho
+    router.put('/cart/:id', [CartController,'update']).as('cart.update') // Atualizar item do carrinho
+    router.delete('/cart/:id', [CartController,'destroy']).as('cart.destroy') // Remover item do carrinho
+  
     router.get('/profile/edit', [UsersController, 'edit']).as('users.edit') // Editar perfil
     router.post('/profile/edit', [UsersController, 'update']).as('users.update') // Atualizar perfil
     router.get('/products/index', [ProductsController, 'index']).as('products.index') // Listar produtos
