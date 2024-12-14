@@ -2,39 +2,45 @@ import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class SocialAuthsController {
-    public redirect({ally}: HttpContext){
-        return ally.use('github').redirect()
+    public redirect({ally, params}: HttpContext){
+        return ally.use(params.provider).redirect()
     }
-    public async callback({ally, auth, session, response}: HttpContext){
-        const github = ally.use('github')
-        if (github.accessDenied()) {
+    public async callback({ally, params, auth, session, response}: HttpContext){
+        const provider = ally.use(params.provider)
+        if (provider.accessDenied()) {
             session.flash('error', 'Acesso negado')
             
             return response.redirect('/login')
         }
 
-        if (github.stateMisMatch()) {
+        if (provider.stateMisMatch()) {
             session.flash('error', 'Requisição expirada, tente novamente')
             
             return response.redirect('/login')
         }
-        if (github.hasError()){
-            session.flash('error', github.getError)
+        if (provider.hasError()){
+            session.flash('error', provider.getError)
             
             return response.redirect('/login')
         }
 
-        const githubUser = await github.user()
+        const providerUser = await provider.user()
 
-        const user = await User.firstOrCreate(
-        {            email: githubUser.email!,
-        },    
-        {
-            username: githubUser.nickName,
-            full_name: githubUser.name,
-            provider: 'github',
-            providerId: githubUser.id,
-        })
+        
+        let user = await User.query().where('email', providerUser.email).orWhereHas('socials', (query) => {
+            query.where('provider', params.provider).where('provider_id', providerUser.id)
+        }).first()
+
+        if(!user){
+            user = await User.create({
+                full_name: providerUser.name,
+                email: providerUser.email,
+                username: providerUser.nickName,
+
+            })
+        }
+
+        await user.related('socials').firstOrCreate({provider: params.provider}, {providerId: providerUser.id})
 
         await auth.use('web').login(user)
 

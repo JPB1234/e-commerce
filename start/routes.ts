@@ -10,9 +10,9 @@ const CartController = () => import('#controllers/cart_controller')
 const AvatarsController = () => import('#controllers/avatars_controller')
 const SocialAuthsController = () => import('#controllers/social_auths_controller')
 
-router.get('/login/github',  [SocialAuthsController, 'redirect'])
+router.get('/login/:provider',  [SocialAuthsController, 'redirect'])
+router.get('/login/:provider/callback', [SocialAuthsController, 'callback'])
 
-router.get('/login/github/callback', [SocialAuthsController, 'callback'])
 
 
 // Rota inicial
