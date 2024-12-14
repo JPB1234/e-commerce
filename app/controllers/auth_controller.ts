@@ -9,10 +9,9 @@ export default class AuthController {
 
   async store({ auth, request, response, session }: HttpContext) {
     try{
-      const payload = await request.validateUsing(createAuthValidator)
-
-      const user = await User.verifyCredentials(payload.email, payload.password)
-      await auth.use('web').login(user)
+      const{email, password, isRememberMe} = await request.validateUsing(createAuthValidator)
+      const user = await User.verifyCredentials(email, password)
+      await auth.use('web').login(user, isRememberMe)
     } catch(exception) {
       session.flashOnly(['email'])
       session.flash({ errors: { login: 'Não encontramos nenhuma conta com essas credenciais.' } })
