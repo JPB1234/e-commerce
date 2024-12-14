@@ -8,7 +8,11 @@ const ProductsController = () => import('#controllers/products_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const CartController = () => import('#controllers/cart_controller')
 const AvatarsController = () => import('#controllers/avatars_controller')
+const SocialAuthsController = () => import('#controllers/social_auths_controller')
 
+router.get('/login/github',  [SocialAuthsController, 'redirect'])
+
+router.get('/login/github/callback', [SocialAuthsController, 'callback'])
 
 
 // Rota inicial
