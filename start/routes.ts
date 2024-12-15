@@ -9,10 +9,15 @@ const AuthController = () => import('#controllers/auth_controller')
 const CartController = () => import('#controllers/cart_controller')
 const AvatarsController = () => import('#controllers/avatars_controller')
 const SocialAuthsController = () => import('#controllers/social_auths_controller')
+const PasswordResetController = () => import('#controllers/password_resets_controller')
 
 router.get('/login/:provider',  [SocialAuthsController, 'redirect'])
 router.get('/login/:provider/callback', [SocialAuthsController, 'callback'])
 
+router.get('/password/forgot', [PasswordResetController, 'forgot']).as('password.forgot')
+router.post('/password/send', [PasswordResetController, 'send']).as('password.send')
+router.get('/password/reset/:token', [PasswordResetController, 'reset']).as('password.reset')
+router.post('/password/store', [PasswordResetController, 'store']).as('password.store')
 
 
 // Rota inicial

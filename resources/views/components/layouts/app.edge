@@ -4,23 +4,27 @@
     <title>Ruralmerce</title>
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     <script src="https://code.iconify.design/3/3.0.0/iconify.min.js" async></script>
+    <style>
+      .column {
+        display: flex;
+        flex-flow: column;
+      }
+    </style>
   </head>
-  <body class=" bg-gray-100">
-    <section class="w-full px-0 pb-12 antialiased bg-white ">
-      <div class="w-full  flex flex-col">
+  <body class="bg-gray-100">
+    <section class="w-full px-0 pb-12 antialiased bg-white">
+      <div class="w-full flex flex-col">
         <!-- Inclui o Header -->
         @include('components/layouts/partials/header')
 
         <!-- conteúdo principal -->
         <div class="flex flex-1">
-          <div class="flex-1 overflow-y-auto">
+          <div class="flex-1 overflow-y-auto column">
             {{{ await $slots.main() }}}
           </div>
         </div>
-
-
       </div>
     </section>
+    @include('components/layouts/partials/footer')
   </body>
 </html>
-@include('components/layouts/partials/footer')
