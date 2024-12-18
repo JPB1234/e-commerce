@@ -1,0 +1,69 @@
+@layouts.app()
+
+<div class="container mx-auto px-4 py-8">
+
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <p class="text-lg text-center text-green-600 font-semibold mb-4">
+      🎉 Compra finalizada com sucesso! Obrigado por escolher a URRPG Store.
+    </p>
+    <p class="text-gray-600 text-center mb-6">
+      Recebemos o seu pedido e em breve entraremos em contato com os detalhes do envio.
+    </p>
+
+    <!-- Resumo da Compra -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">Resumo do Pedido</h2>
+      <table class="min-w-full table-auto mb-8">
+        <thead>
+          <tr class="bg-gray-200 text-left text-gray-700 uppercase text-sm tracking-wider">
+            <th class="px-6 py-4">Produto</th>
+            <th class="px-6 py-4">Preço</th>
+            <th class="px-6 py-4">Quantidade</th>
+            <th class="px-6 py-4">Total</th>
+          </tr>
+        <tbody>
+          @each(product in cart)
+          <tr id="product-{{ product.product_id }}" class="border-b hover:bg-gray-50 transition">
+              <td class="px-6 py-4 flex items-center space-x-4">
+                <img 
+                  src="{{ product.imageUrl ? product.imageUrl : '/images/default-product.jpg' }}" 
+                  alt="{{ product.name }}" 
+                  class="w-20 h-20 object-cover rounded-md shadow-sm"
+                >
+                <span class="font-medium text-gray-900">{{ product.name }}</span>
+              </td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ Number(product.price).toFixed(2) }}</td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">{{ product.quantity }}</td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ product.total.toFixed(2) }}</td>
+              <td class="px-6 py-4">
+          </tr>
+          @endeach
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-gray-50 p-6 rounded-lg shadow-sm flex justify-between items-center">
+        <p id="cart-total" class="text-lg font-semibold text-gray-800">Total: 
+          <span class="text-green-600 font-bold">R$ {{ cart.reduce((sum, product) => sum + product.total, 0).toFixed(2) }}</span>
+        </p>
+    </div>
+
+
+    <!-- Informações adicionais -->
+    <div class="text-gray-700 text-sm mt-6">
+      <p class="mb-2">
+        💬 Em caso de dúvidas, entre em contato conosco através de nosso suporte.
+      </p>
+    </div>
+
+    <!-- Botão de retorno -->
+    <div class="text-center mt-8">
+      <a 
+        href="/products/index" 
+        class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105"
+      >
+        Continuar Comprando
+      </a>
+    </div>
+  </div>
+</div>
+@end

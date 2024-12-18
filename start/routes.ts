@@ -17,6 +17,8 @@ router.on('/').render('pages/home/show').as('home.show')
 // Rota de Avatar
 router.get('/avatars/:filename', [AvatarsController, 'show']).as('avatars.show')
 
+router.get('/checkout', [CartController, 'checkout']).as('cart.checkout')
+
 // Rotas de autenticação
 router
   .group(() => {

@@ -1,7 +1,4 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { Route } from '@adonisjs/core/http'
-import { Env } from '@ioc/core/build/modules/env/main.js'
-import { BaseSchema } from '@adonisjs/lucid/schema'
 import { passwordResetValidator } from '#validators/password_reset'
 import User from '#models/user'
 import Token from '#models/token'

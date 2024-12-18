@@ -11,6 +11,7 @@
             <th class="px-6 py-4">Produto</th>
             <th class="px-6 py-4">Preço</th>
             <th class="px-6 py-4">Quantidade</th>
+            <th class="px-6 py-4">Quantidade no Estoque</th>
             <th class="px-6 py-4">Total</th>
             <th class="px-6 py-4">Ações</th>
           </tr>
@@ -28,6 +29,7 @@
               </td>
               <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ Number(product.price).toFixed(2) }}</td>
               <td class="px-6 py-4 text-gray-800 font-semibold">{{ product.quantity }}</td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">{{ product.stock }}</td>
               <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ product.total.toFixed(2) }}</td>
               <td class="px-6 py-4">
                 <button 
