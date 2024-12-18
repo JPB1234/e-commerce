@@ -11,7 +11,7 @@ export default class extends BaseSchema {
       table.decimal('price').notNullable().checkPositive()
       table.text('description').notNullable()
       table.integer('category_id').unsigned().nullable().references('id').inTable('categories').onDelete('CASCADE')
-      table.integer('stock').notNullable().checkPositive()
+      table.integer('stock').notNullable()
 
       table.string('image_url').nullable(); 
       
