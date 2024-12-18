@@ -1,55 +1,138 @@
 @layouts.app()
 
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">Seu Carrinho</h1>
+  <h1 class="text-4xl font-extrabold text-gray-900 mb-8">Seu Carrinho</h1>
 
   @if(cart.length > 0)
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-      <table class="min-w-full table-auto mb-6">
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+      <table class="min-w-full table-auto mb-8">
         <thead>
-          <tr class="bg-gray-100 text-left">
-            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Produto</th>
-            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Preço</th>
-            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Quantidade</th>
-            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Total</th>
-            <th class="px-4 py-3 text-sm font-semibold text-gray-700">Ações</th>
+          <tr class="bg-gray-200 text-left text-gray-700 uppercase text-sm tracking-wider">
+            <th class="px-6 py-4">Produto</th>
+            <th class="px-6 py-4">Preço</th>
+            <th class="px-6 py-4">Quantidade</th>
+            <th class="px-6 py-4">Total</th>
+            <th class="px-6 py-4">Ações</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="cart-items">
           @each(product in cart)
-            <tr class="border-b">
-              <td class="px-4 py-3 text-sm text-gray-800">
-                <img src="{{ product.imageUrl }}" alt="{{ product.name }}" class="w-16 h-16 object-cover mr-4">
-                {{ product.name }}
+            <tr id="product-{{ product.product_id }}" class="border-b hover:bg-gray-50 transition">
+              <td class="px-6 py-4 flex items-center space-x-4">
+                <img 
+                  src="{{ product.imageUrl ? product.imageUrl : '/images/default-product.jpg' }}" 
+                  alt="{{ product.name }}" 
+                  class="w-20 h-20 object-cover rounded-md shadow-sm"
+                >
+                <span class="font-medium text-gray-900">{{ product.name }}</span>
               </td>
-              <td class="px-4 py-3 text-sm text-gray-800">R$ {{ Number(product.price).toFixed(2) }}</td>
-              <td class="px-4 py-3 text-sm text-gray-800">
-                <form method="POST" action="{{ route('cart.update', { id: product.product_id }) }}">
-                  <input type="number" name="quantity" value="{{ product.quantity }}" class="w-16 p-2 border border-gray-300 rounded-md text-center" min="1">
-                  <button type="submit" class="text-blue-500 hover:text-blue-700 ml-2">Atualizar</button>
-                </form>
-              </td>
-            <td class="px-4 py-3 text-sm text-gray-800">R$ {{ product.price ? Number(product.price).toFixed(2) : '0.00' }}</td>
-              <td class="px-4 py-3 text-sm text-gray-800">
-              <form method="POST" action="{{ route('cart.destroy', { id: product.product_id }) }}">
-                <input type="hidden" name="_method" value="DELETE"> 
-                <button type="submit" class="text-red-500 hover:text-red-700">Remover</button>
-              </form>
+              <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ Number(product.price).toFixed(2) }}</td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">{{ product.quantity }}</td>
+              <td class="px-6 py-4 text-gray-800 font-semibold">R$ {{ product.total.toFixed(2) }}</td>
+              <td class="px-6 py-4">
+                <button 
+                  class="text-red-500 hover:text-red-700 transition-transform transform hover:scale-125"
+                  onclick="removeItem({{ product.product_id }})"
+                  title="Remover do carrinho"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
               </td>
             </tr>
           @endeach
         </tbody>
       </table>
 
-      <div class="text-right">
-        <p class="text-lg font-semibold text-gray-800">Total: R$ {{ cart.reduce((sum, product) => sum + product.total, 0).toFixed(2) }}</p>
-        <a href="/checkout" class="mt-4 inline-block bg-green-500 text-white px-6 py-3 rounded-md shadow-lg hover:bg-green-600 transition-all">Finalizar Compra</a>
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm flex justify-between items-center">
+        <p id="cart-total" class="text-lg font-semibold text-gray-800">Total: 
+          <span class="text-green-600 font-bold">R$ {{ cart.reduce((sum, product) => sum + product.total, 0).toFixed(2) }}</span>
+        </p>
+        <a 
+          href="/checkout" 
+          class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105"
+        >
+          Finalizar Compra
+        </a>
       </div>
     </div>
   @else
-    <p class="text-gray-600">Seu carrinho está vazio.</p>
+    <div class="text-center">
+      <p class="text-xl font-light text-gray-600">Seu carrinho está vazio.</p>
+      <a 
+        href="/products/index" 
+        class="mt-4 inline-block bg-indigo-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-indigo-600 transition-transform transform hover:scale-105"
+      >
+        Ver Produtos
+      </a>
+    </div>
   @endif
 </div>
 @end
 
+<script>
+async function removeItem(productId) {
+  try {
+    const response = await fetch(`/cart/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
+    if (response.ok) {
+      const data = await response.json();  // Recebe o carrinho atualizado
+
+      // Atualiza a lista de itens no carrinho
+      const cartItems = data.cart; // A lista atualizada de produtos no carrinho
+
+      // Remove o item visualmente
+      document.getElementById(`product-${productId}`).remove();
+
+      // Atualiza o total do carrinho
+      document.getElementById('cart-total').innerHTML = `Total: <span class="text-green-600 font-bold">R$ ${cartItems.reduce((sum, product) => sum + product.total, 0).toFixed(2)}</span>`;
+
+      // Atualiza a lista de produtos no carrinho (se necessário)
+      const cartItemsContainer = document.getElementById('cart-items');
+      cartItemsContainer.innerHTML = '';
+
+      cartItems.forEach(product => {
+        const row = document.createElement('tr');
+        row.classList.add('border-b', 'hover:bg-gray-50', 'transition');
+        row.id = `product-${product.product_id}`;
+
+        row.innerHTML = `
+          <td class="px-6 py-4 flex items-center space-x-4">
+            <img src="${product.imageUrl ? product.imageUrl : '/images/default-product.jpg'}" alt="${product.name}" class="w-20 h-20 object-cover rounded-md shadow-sm">
+            <span class="font-medium text-gray-900">${product.name}</span>
+          </td>
+          <td class="px-6 py-4 text-gray-800 font-semibold">R$ ${Number(product.price).toFixed(2)}</td>
+          <td class="px-6 py-4 text-gray-800 font-semibold">${product.quantity}</td>
+          <td class="px-6 py-4 text-gray-800 font-semibold">R$ ${product.total.toFixed(2)}</td>
+          <td class="px-6 py-4">
+            <button class="text-red-500 hover:text-red-700 transition-transform transform hover:scale-125" onclick="removeItem(${product.product_id})" title="Remover do carrinho">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </td>
+        `;
+
+        cartItemsContainer.appendChild(row);
+      });
+
+      // Verifica se o carrinho está vazio
+      if (cartItems.length === 0) {
+        document.querySelector('.container').innerHTML = '<p class="text-center text-xl font-light text-gray-600">Seu carrinho está vazio.</p>';
+      }
+    } else {
+      console.error('Erro ao remover o produto');
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
+}
+
+
+</script>
