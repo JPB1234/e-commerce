@@ -67,6 +67,11 @@
             })
               Criar Conta
             @end
+            @flashMessage('errors.login')
+              <p class="text-sm text-red-500">
+                {{ $message }}
+              </p>
+            @end
           </div>
         @end
 

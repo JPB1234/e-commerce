@@ -24,7 +24,6 @@ export default class ProductsController {
     });
   }
 
-  // Exibe o produto
   async show({ view, params }: HttpContext) {
     try {
       const product = await Product.findOrFail(params.id);
@@ -39,7 +38,7 @@ export default class ProductsController {
 
   // Criação de novo produto
   async store({ request, response }: HttpContext) {
-    const payload = request.only(['name', 'price', 'description', 'category_id']); // Dados do formulário
+    const payload = request.only(['name', 'price', 'description', 'category_id', 'stock']); // Dados do formulário
     let imageUrl = null;
 
     const image = request.file('image', {
@@ -69,7 +68,7 @@ export default class ProductsController {
   // Atualiza as informações do produto
   async patch({ params, request }: HttpContext) {
     const product = await Product.findOrFail(params.id);
-    const payload = request.only(['name', 'price', 'description', 'category_id']);
+    const payload = request.only(['name', 'price', 'description', 'category_id', 'stock']);
     let imageUrl = product.imageUrl; 
 
     const image = request.file('image', {

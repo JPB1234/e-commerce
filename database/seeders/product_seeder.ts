@@ -9,84 +9,96 @@ export default class ProductSeeder extends BaseSeeder {
         price: 20.00, 
         categoryId: 5, 
         description: 'Incrivel chapéu de mago para quem gosta de fazer cosplay.',
-        imageUrl: '/images/chapeuMago.png' 
+        imageUrl: '/images/chapeuMago.png', 
+        stock: 3
       },
       { 
         name: 'Conjunto de Dados Arcano: Cristal Azul', 
         price: 59.90, 
         categoryId: 1, 
         description: 'Um conjunto de 7 dados polidos com acabamento translúcido, perfeitos para sessões que exigem um toque de magia. Inclui D20, D12, D10, D8, D6, D4 e percentual.',
-        imageUrl: '/images/dadosCristal.png' 
+        imageUrl: '/images/dadosCristal.png', 
+        stock: 3
       },
       { 
         name: 'Torre de Dados: Dragão de Prata', 
         price: 149.90, 
         categoryId: 1, 
         description: 'Uma torre para rolar dados com design inspirado em dragões. Feita de resina durável e pintada à mão.',
-        imageUrl: '/images/TorreDados.png' 
+        imageUrl: '/images/TorreDados.png',
+        stock: 3 
       },
       { 
         name: 'Compêndio das Terras Sombrias', 
         price: 119.90, 
         categoryId: 2, 
         description: 'Um suplemento de RPG com mapas detalhados, novos monstros e opções de classes para campanhas sombrias.',
-        imageUrl: '/images/Compendio das Terras Sombrias.png' 
+        imageUrl: '/images/Compendio das Terras Sombrias.png',
+        stock: 3
       },
       { 
         name: 'Guia do Mestre Épico', 
         price: 89.90, 
         categoryId: 2, 
         description: 'Um livro essencial para mestres que desejam criar aventuras memoráveis. Inclui dicas avançadas e tabelas de eventos aleatórios.',
-        imageUrl: '/images/Guia mestre epico.png' 
+        imageUrl: '/images/Guia mestre epico.png',
+        stock: 3
       },
       { 
         name: 'Miniatura: Guerreiro Orc em Combate', 
         price: 39.90, 
         categoryId: 3, 
         description: 'Uma miniatura de alta qualidade representando um orc guerreiro com machado duplo. Ideal para combates intensos no tabuleiro.',
-        imageUrl: '/images/Miniatura guerreiro.png' 
+        imageUrl: '/images/Miniatura guerreiro.png',
+        stock: 3 
       },
       { 
         name: 'Miniatura: Dragão Vermelho Ancião', 
         price: 199.90, 
         categoryId: 3, 
         description: 'Um dragão detalhado e imponente, com asas abertas e escamas cintilantes. Perfeito como boss final na sua campanha.',
-        imageUrl: '/images/Miniatura dragao.png' 
+        imageUrl: '/images/Miniatura dragao.png',
+        stock: 3 
       },
       { 
         name: 'Caneca do Bárbaro: "Por Cerveja e Glória"', 
         price: 49.90, 
         categoryId: 4, 
         description: 'Caneca de cerâmica com capacidade para 500 ml, ilustrada com um bárbaro e seu lema de batalha.',
-        imageUrl: '/images/Caneca Barbaro.png' 
+        imageUrl: '/images/Caneca Barbaro.png',
+        stock: 3
       },
       { 
         name: 'Moeda de Ouro do Aventureiro', 
         price: 9.90, 
         categoryId: 4, 
         description: 'Réplica de moeda medieval, ideal para representar tesouros ou ser usada como token em mesas de RPG.',
-        imageUrl: '/images/Moeda.png' 
+        imageUrl: '/images/Moeda.png',
+        stock: 3 
       },
       { 
         name: 'Capa do Mago Elemental', 
         price: 229.90, 
         categoryId: 5, 
         description: 'Uma capa com bordados de símbolos elementais, feita em tecido leve e resistente, ideal para cosplays e mesas temáticas.',
-        imageUrl: '/images/capa.png' 
+        imageUrl: '/images/capa.png',
+        stock: 3 
       },
       { 
         name: 'Tiara Elfica com Cristal Verde', 
         price: 89.90, 
         categoryId: 5, 
         description: 'Acessório artesanal que combina beleza e praticidade para cosplays de elfos ou druidas.',
-        imageUrl: '/images/tIara.png' 
+        imageUrl: '/images/tIara.png',
+        stock: 3 
       },
       { 
         name: 'Mapa Pergaminho: Reinos Perdidos', 
         price: 74.90, 
         categoryId: 6, 
         description: 'Um mapa impresso em papel de alta gramatura com acabamento envelhecido. Tamanho A2.',
-        imageUrl: '/images/Pergaminho.png' 
+        imageUrl: '/images/Pergaminho.png',
+        stock: 3 
       },
     ])
   }

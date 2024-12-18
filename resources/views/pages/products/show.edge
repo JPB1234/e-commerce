@@ -77,6 +77,16 @@
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               >
             </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Quantidade no estoque</label>
+              <input 
+                type="number" 
+                x-model="product.stock" 
+                step="0" 
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              >
+            </div>
         
             <div class="mt-4">
               <label for="category_id" class="block text-gray-700 font-medium mb-1">Categoria</label>
@@ -124,7 +134,7 @@
         <!-- Formulário de Adicionar ao Carrinho -->
         <form method="POST" action="{{ route('cart.store') }}">
           <input type="hidden" name="product_id" value="{{ product.id }}">
-          <input type="number" name="quantity" value="1" class="w-16 border p-2">
+          <input type="number" min= "0" name="quantity" value="1" class="w-16 border p-2">
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all">
             Adicionar ao Carrinho
           </button>
@@ -141,6 +151,7 @@
         id: {{ product.id }},
         name: "{{ product.name }}",
         price: {{ product.price }},
+        stock: {{ product.stock }},
         description: "{{ product.description }}",
         category: {
           id: "{{ product.category.id }}",
@@ -162,6 +173,7 @@
         const formData = new FormData();
         formData.append('name', this.product.name);
         formData.append('price', this.product.price);
+        formData.append('stock', this.product.stock);
         formData.append('description', this.product.description);
         formData.append('category_id', this.product.category.id);
 

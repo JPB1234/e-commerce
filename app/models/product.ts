@@ -20,6 +20,9 @@ export default class Product extends BaseModel {
   declare category: BelongsTo<typeof Category>
 
   @column()
+  declare stock: number; // Nova coluna para controle de estoque
+
+  @column()
   declare description: string
 
   @column()

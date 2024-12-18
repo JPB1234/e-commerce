@@ -13,12 +13,17 @@ export default class UsersController {
   }
 
   // Guardar informações do usuário 
-  public async store({ request, response }: HttpContext) {
+  public async store({ request, response, session }: HttpContext) {
+    try{
     const payload = await request.validateUsing(createUserValidator);
 
     const user = new User();
     user.merge(payload);
     await user.save();
+    }catch{
+      session.flash({ errors: { login: 'Esse email ou usuário já está em uso.' } })
+      return response.redirect().back()
+    }
 
     return response.redirect().toRoute('auth.create');
   }

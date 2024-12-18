@@ -30,6 +30,18 @@
           required: true
         })
       </div>
+
+      <div class="mb-4">
+        <label for="stock" class="block text-gray-700 font-medium mb-1">Quantidade no estoque</label>
+        @!input({
+          name: 'stock',
+          type: 'number',
+          step: '0',
+          class: 'border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+          placeholder: 'Digite a quantidade de produtos no estoque',
+          required: true
+        })
+      </div>
       
       <div class="mb-4">
         <label for="description" class="block text-gray-700 font-medium mb-1">Descrição</label>
