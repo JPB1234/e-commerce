@@ -60,12 +60,14 @@
     "@adonisjs/core": "^6.14.1",
     "@adonisjs/drive": "^3.2.0",
     "@adonisjs/lucid": "^21.3.0",
+    "@adonisjs/mail": "^9.2.2",
     "@adonisjs/session": "^7.5.0",
     "@adonisjs/shield": "^8.1.1",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^3.0.0",
     "@iconify-json/heroicons": "^1.2.1",
     "@iconify/iconify": "^3.1.1",
+    "@poppinss/utils": "^6.8.3",
     "@vinejs/vine": "^2.1.0",
     "alpinejs": "^3.14.3",
     "better-sqlite3": "^11.5.0",
@@ -75,7 +77,8 @@
     "edge.js": "^6.2.0",
     "luxon": "^3.5.0",
     "reflect-metadata": "^0.2.2",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "uuid": "^11.0.3"
   },
   "hotHook": {
     "boundaries": [
